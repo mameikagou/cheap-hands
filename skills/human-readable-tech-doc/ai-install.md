@@ -16,17 +16,16 @@
 
 This installation will:
 - CREATE directory: `$HOME/.claude/skills/human-readable-tech-doc/`
-- CREATE directory: `$HOME/.claude/skills/human-readable-tech-doc/references/`
 - CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/SKILL.md`
-- CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/references/patterns.md`
 - CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md`
+- CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/references/patterns.md`
 - MODIFY: Nothing. No existing files will be changed.
 
 ## Installation Steps
 
 ### Step 1: Create skill directory
 
-Run: `mkdir -p $HOME/.claude/skills/human-readable-tech-doc/references`
+Run: `mkdir -p $HOME/.claude/skills/human-readable-tech-doc`
 
 ### Step 2: Write SKILL.md
 
@@ -228,26 +227,39 @@ Before delivering any document, verify:
 
 - **Detailed patterns and examples**: See [references/patterns.md](references/patterns.md) for complete document templates, before/after examples, and common anti-patterns.
 - **Diátaxis quick reference**: See [references/diataxis-cheatsheet.md](references/diataxis-cheatsheet.md) for the four document types with decision flowchart.
+
 ```
 
 ### Step 3: Download reference files
 
-Run these commands to download the reference files:
+Run: `curl -fsSL "https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md" --create-dirs -o "$HOME/.claude/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md"`
 
-```bash
-curl -fsSL "https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/human-readable-tech-doc/references/patterns.md" -o "$HOME/.claude/skills/human-readable-tech-doc/references/patterns.md"
-curl -fsSL "https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md" -o "$HOME/.claude/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md"
-```
+Run: `curl -fsSL "https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/human-readable-tech-doc/references/patterns.md" --create-dirs -o "$HOME/.claude/skills/human-readable-tech-doc/references/patterns.md"`
 
-### Step 4: Verify installation
 
-Check that all files exist:
-- `$HOME/.claude/skills/human-readable-tech-doc/SKILL.md`
-- `$HOME/.claude/skills/human-readable-tech-doc/references/patterns.md`
-- `$HOME/.claude/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md`
+### Ensure skills directory is registered
 
-Confirm the SKILL.md file starts with `---` (valid YAML frontmatter).
+Read `$HOME/.claude/settings.json`. Check if the `"skills"` array contains
+a path that covers `$HOME/.claude/skills/`. If not, add `"$HOME/.claude/skills"`
+to the array.
 
-### Step 5: Report success
+### Verify installation
 
-Tell the user: "Skill 'human-readable-tech-doc' installed successfully to ~/.claude/skills/human-readable-tech-doc/"
+Read `$HOME/.claude/skills/human-readable-tech-doc/SKILL.md` and confirm:
+- YAML frontmatter has valid `name` and `description` fields
+- File content is not empty or corrupted
+
+### Report to user
+
+Tell the user:
+"human-readable-tech-doc installed successfully!
+- Location: ~/.claude/skills/human-readable-tech-doc/
+- Trigger: Generate human-readable technical documentation that helps readers quickly understand code core logic and system archite
+- To uninstall: delete the ~/.claude/skills/human-readable-tech-doc/ directory"
+
+## Rollback
+
+If ANY step fails:
+1. Delete the `$HOME/.claude/skills/human-readable-tech-doc/` directory if it was created
+2. Tell the user exactly which step failed and why
+3. Do NOT leave partial installations behind
