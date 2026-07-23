@@ -16,9 +16,9 @@
 
 This installation will:
 - CREATE directory: `$HOME/.claude/skills/human-readable-tech-doc/`
-- CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/SKILL.md`
-- CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md`
 - CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/references/patterns.md`
+- CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md`
+- CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/SKILL.md`
 - MODIFY: Nothing. No existing files will be changed.
 
 ## Installation Steps
@@ -232,9 +232,9 @@ Before delivering any document, verify:
 
 ### Step 3: Download reference files
 
-Run: `curl -fsSL "https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md" --create-dirs -o "$HOME/.claude/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md"`
-
 Run: `curl -fsSL "https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/human-readable-tech-doc/references/patterns.md" --create-dirs -o "$HOME/.claude/skills/human-readable-tech-doc/references/patterns.md"`
+
+Run: `curl -fsSL "https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md" --create-dirs -o "$HOME/.claude/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md"`
 
 
 ### Ensure skills directory is registered
