@@ -16,9 +16,9 @@
 
 This installation will:
 - CREATE directory: `$HOME/.claude/skills/anti-ai-writing/`
+- CREATE file: `$HOME/.claude/skills/anti-ai-writing/SKILL-EN.md`
 - CREATE file: `$HOME/.claude/skills/anti-ai-writing/SKILL.md`
 - CREATE file: `$HOME/.claude/skills/anti-ai-writing/SKILL-huaczy.md`
-- CREATE file: `$HOME/.claude/skills/anti-ai-writing/SKILL-EN.md`
 - MODIFY: Nothing. No existing files will be changed.
 
 ## Installation Steps

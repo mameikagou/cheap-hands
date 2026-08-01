@@ -29,7 +29,8 @@ Run: `mkdir -p $HOME/.claude/skills/plain-talk`
 
 Write the following content to `$HOME/.claude/skills/plain-talk/SKILL.md`:
 
-```---
+```
+---
 name: plain-talk
 description: 让模型回答问题、做解释时说人话——用对方不查不猜就能听懂的话。适用于撰写任何面向用户的回复和解释，尤其是解释技术话题，以及用户说"看不懂""什么意思""说人话"之后。规则以负面清单为主：不甩裸名词、不用比喻、不跨领域对照、不为全面而罗列、不绕弯子。讲架构按文件链路讲。术语要教不要躲：术语+人话成对出现，目标是让对方学会术语，而不是把术语删光。
 ---
@@ -149,3 +150,33 @@ description: 让模型回答问题、做解释时说人话——用对方不查�
 - 没有分层概念图，直接给文件和函数
 - sqlite 注册表、parquet 首次出现都带一句用途解释
 - 最后一句总结只陈述结构，不升华
+
+```
+
+
+### Ensure skills directory is registered
+
+Read `$HOME/.claude/settings.json`. Check if the `"skills"` array contains
+a path that covers `$HOME/.claude/skills/`. If not, add `"$HOME/.claude/skills"`
+to the array.
+
+### Verify installation
+
+Read `$HOME/.claude/skills/plain-talk/SKILL.md` and confirm:
+- YAML frontmatter has valid `name` and `description` fields
+- File content is not empty or corrupted
+
+### Report to user
+
+Tell the user:
+"plain-talk installed successfully!
+- Location: ~/.claude/skills/plain-talk/
+- Trigger: 让模型回答问题、做解释时说人话——用对方不查不猜就能听懂的话。适用于撰写任何面向用户的回复和解释，尤其是解释技术话题，以及用户说"看不懂""什么意思""说人话"之后。规则以负面清单为主：不甩裸名词、不用比喻、不跨领域对照、不为全面而罗列、不
+- To uninstall: delete the ~/.claude/skills/plain-talk/ directory"
+
+## Rollback
+
+If ANY step fails:
+1. Delete the `$HOME/.claude/skills/plain-talk/` directory if it was created
+2. Tell the user exactly which step failed and why
+3. Do NOT leave partial installations behind

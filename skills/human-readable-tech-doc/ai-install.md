@@ -16,9 +16,9 @@
 
 This installation will:
 - CREATE directory: `$HOME/.claude/skills/human-readable-tech-doc/`
+- CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/SKILL.md`
 - CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/references/patterns.md`
 - CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/references/diataxis-cheatsheet.md`
-- CREATE file: `$HOME/.claude/skills/human-readable-tech-doc/SKILL.md`
 - MODIFY: Nothing. No existing files will be changed.
 
 ## Installation Steps
