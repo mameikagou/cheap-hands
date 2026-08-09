@@ -6,6 +6,14 @@ A collection of Claude Code skills. Install any skill by pasting one line into C
 
 Copy any line below into your Claude Code conversation. Claude will fetch the instructions and install the skill automatically.
 
+### sanity
+
+Reviews quantitative research ideas and systems against the frozen business contract, local knowledge, prior results, and external evidence before implementation. It keeps weak-factor combination research permissive while guarding against leakage, fake breadth, and execution errors.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanity/ai-install.md and follow the instructions inside.
+```
+
 ### opencode-coder
 
 Delegates code generation to cheap external models (MiniMax-M2.7, GPT-5.3-Codex) for 95% cost savings. Claude reads, dispatches, and reviews; the external model writes code.
