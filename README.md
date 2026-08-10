@@ -38,6 +38,14 @@ Packages any existing skill into a zero-friction auto-install bundle (ai-install
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/skill-auto-installer/ai-install.md and follow the instructions inside.
 ```
 
+### learn-codebase
+
+Socratic codebase tutor that uses prediction, evidence-based questioning, active recall, and a learning journal to turn unfamiliar code into understanding you can defend in review or interviews. Based on [`ktaletsk/learn-codebase`](https://github.com/ktaletsk/learn-codebase).
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/learn-codebase/ai-install.md and follow the instructions inside.
+```
+
 ### code-graph
 
 Builds a local LSP code graph so Claude can efficiently read large codebases without traversing every source file. (Work in progress)
@@ -56,6 +64,7 @@ Fetch the following URLs one by one and follow the instructions inside each:
 2. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/write-skill/ai-install.md
 3. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/skill-auto-installer/ai-install.md
 4. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/code-graph/ai-install.md
+5. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/learn-codebase/ai-install.md
 ```
 
 ## npm (opencode-coder only)
