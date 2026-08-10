@@ -15,14 +15,14 @@ mkdir -p "$SKILL_DIR/references"
 mkdir -p "$SKILL_DIR/assets"
 
 # Download files
-curl -fsSL "$REPO_BASE/LICENSE" -o "$SKILL_DIR/LICENSE"
 curl -fsSL "$REPO_BASE/SKILL.md" -o "$SKILL_DIR/SKILL.md"
-curl -fsSL "$REPO_BASE/references/QUESTION-PATTERNS.md" -o "$SKILL_DIR/references/QUESTION-PATTERNS.md"
 curl -fsSL "$REPO_BASE/references/JOURNAL-TEMPLATE.md" -o "$SKILL_DIR/references/JOURNAL-TEMPLATE.md"
+curl -fsSL "$REPO_BASE/references/QUESTION-PATTERNS.md" -o "$SKILL_DIR/references/QUESTION-PATTERNS.md"
+curl -fsSL "$REPO_BASE/LICENSE" -o "$SKILL_DIR/LICENSE"
+curl -fsSL "$REPO_BASE/assets/logo-dark.svg" -o "$SKILL_DIR/assets/logo-dark.svg"
+curl -fsSL "$REPO_BASE/assets/icon.svg" -o "$SKILL_DIR/assets/icon.svg"
 curl -fsSL "$REPO_BASE/assets/logo-light.svg" -o "$SKILL_DIR/assets/logo-light.svg"
 curl -fsSL "$REPO_BASE/assets/logo-icon.svg" -o "$SKILL_DIR/assets/logo-icon.svg"
-curl -fsSL "$REPO_BASE/assets/icon.svg" -o "$SKILL_DIR/assets/icon.svg"
-curl -fsSL "$REPO_BASE/assets/logo-dark.svg" -o "$SKILL_DIR/assets/logo-dark.svg"
 
 # Verify
 if [ ! -f "$SKILL_DIR/SKILL.md" ]; then
