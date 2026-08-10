@@ -16,14 +16,14 @@
 
 This installation will:
 - CREATE directory: `$HOME/.claude/skills/learn-codebase/`
-- CREATE file: `$HOME/.claude/skills/learn-codebase/SKILL.md`
-- CREATE file: `$HOME/.claude/skills/learn-codebase/references/JOURNAL-TEMPLATE.md`
-- CREATE file: `$HOME/.claude/skills/learn-codebase/references/QUESTION-PATTERNS.md`
 - CREATE file: `$HOME/.claude/skills/learn-codebase/LICENSE`
-- CREATE file: `$HOME/.claude/skills/learn-codebase/assets/logo-dark.svg`
-- CREATE file: `$HOME/.claude/skills/learn-codebase/assets/icon.svg`
+- CREATE file: `$HOME/.claude/skills/learn-codebase/SKILL.md`
+- CREATE file: `$HOME/.claude/skills/learn-codebase/references/QUESTION-PATTERNS.md`
+- CREATE file: `$HOME/.claude/skills/learn-codebase/references/JOURNAL-TEMPLATE.md`
 - CREATE file: `$HOME/.claude/skills/learn-codebase/assets/logo-light.svg`
 - CREATE file: `$HOME/.claude/skills/learn-codebase/assets/logo-icon.svg`
+- CREATE file: `$HOME/.claude/skills/learn-codebase/assets/icon.svg`
+- CREATE file: `$HOME/.claude/skills/learn-codebase/assets/logo-dark.svg`
 - MODIFY: Nothing. No existing files will be changed.
 
 ## Installation Steps
