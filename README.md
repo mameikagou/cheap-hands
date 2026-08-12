@@ -6,12 +6,12 @@ A collection of Claude Code skills. Install any skill by pasting one line into C
 
 Copy any line below into your Claude Code conversation. Claude will fetch the instructions and install the skill automatically.
 
-### suhua（酥化）
+### suization（酥化）
 
 Turns real project notes into strong, interview-ready technical chains, resume bullets, and deep-dive preparation without inventing ownership or metrics.
 
 ```
-Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/suhua/ai-install.md and follow the instructions inside.
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/suization/ai-install.md and follow the instructions inside.
 ```
 
 ### sanity
@@ -68,7 +68,7 @@ Paste this into Claude Code to install every skill in one go:
 
 ```
 Fetch the following URLs one by one and follow the instructions inside each:
-1. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/suhua/ai-install.md
+1. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/suization/ai-install.md
 2. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/opencode-coder/ai-install.md
 3. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/write-skill/ai-install.md
 4. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/skill-auto-installer/ai-install.md
