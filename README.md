@@ -6,6 +6,14 @@ A collection of Claude Code skills. Install any skill by pasting one line into C
 
 Copy any line below into your Claude Code conversation. Claude will fetch the instructions and install the skill automatically.
 
+### resume-chain
+
+Turns real project notes into strong, interview-ready technical chains, resume bullets, and deep-dive preparation without inventing ownership or metrics.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/resume-chain/ai-install.md and follow the instructions inside.
+```
+
 ### sanity
 
 Reviews quantitative research ideas and systems against the frozen business contract, local knowledge, prior results, and external evidence before implementation. It keeps weak-factor combination research permissive while guarding against leakage, fake breadth, and execution errors.
@@ -60,11 +68,12 @@ Paste this into Claude Code to install every skill in one go:
 
 ```
 Fetch the following URLs one by one and follow the instructions inside each:
-1. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/opencode-coder/ai-install.md
-2. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/write-skill/ai-install.md
-3. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/skill-auto-installer/ai-install.md
-4. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/code-graph/ai-install.md
-5. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/learn-codebase/ai-install.md
+1. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/resume-chain/ai-install.md
+2. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/opencode-coder/ai-install.md
+3. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/write-skill/ai-install.md
+4. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/skill-auto-installer/ai-install.md
+5. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/code-graph/ai-install.md
+6. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/learn-codebase/ai-install.md
 ```
 
 ## npm (opencode-coder only)
