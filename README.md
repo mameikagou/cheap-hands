@@ -22,6 +22,14 @@ Reviews quantitative research ideas and systems against the frozen business cont
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanity/ai-install.md and follow the instructions inside.
 ```
 
+### mainline-drift-audit
+
+Audits plans and implementations for parallel systems, duplicated truth, directory-scanned state, unbounded artifacts, and database or data-lake bypasses.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mainline-drift-audit/ai-install.md and follow the instructions inside.
+```
+
 ### opencode-coder
 
 Delegates code generation to cheap external models (MiniMax-M2.7, GPT-5.3-Codex) for 95% cost savings. Claude reads, dispatches, and reviews; the external model writes code.
@@ -74,6 +82,7 @@ Fetch the following URLs one by one and follow the instructions inside each:
 4. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/skill-auto-installer/ai-install.md
 5. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/code-graph/ai-install.md
 6. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/learn-codebase/ai-install.md
+7. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mainline-drift-audit/ai-install.md
 ```
 
 ## npm (opencode-coder only)

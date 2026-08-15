@@ -1,0 +1,4 @@
+interface:
+  display_name: "主线漂移与屎山审查"
+  short_description: "Audit technical plans, mainline drift, and artifact bloat"
+  default_prompt: "Use $mainline-drift-audit to review this technical proposal and its implementation for mainline drift, duplicated systems, and artifact bloat."
