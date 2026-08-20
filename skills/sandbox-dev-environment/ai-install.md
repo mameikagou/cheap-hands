@@ -204,26 +204,26 @@ outbox request or retry by copying it into the central lake.
 ## Query the dashboard API
 
 Guests receive no PostgreSQL DSN or database client authority. Query the same
-read models used by the frontend through the fixed qrant CLI instead. BotMux
-injects `QRANT_FRONTEND_API_BASE_URL` as the approved host-loopback API address;
-do not replace it with the public Cloudflare Access URL or probe other host
-ports.
+read models used by the frontend through the fixed BotMux query shim instead.
+It runs against the image's preloaded Python environment, so a cold workspace
+does not create a virtualenv or download packages. The API origin is fixed to
+the approved host-loopback address; do not replace it with the public
+Cloudflare Access URL or probe other host ports.
 
 ```bash
-cd /workspace/analyze
-uv run qrant-qlib result query health
-uv run qrant-qlib result query catalog-stats
-uv run qrant-qlib result query catalog-items --type strategy --market us --status active
-uv run qrant-qlib result query catalog-strategy <strategy-id>
-uv run qrant-qlib result query catalog-factors
-uv run qrant-qlib result query backtests --market us --level all
-uv run qrant-qlib result query backtest <run-id>
-uv run qrant-qlib result query backtest-result <backtest-id>
-uv run qrant-qlib result query factor-pool
-uv run qrant-qlib result query workflow-tasks --status running
-uv run qrant-qlib result query workflow-task <task-id>
-uv run qrant-qlib result query research-assets
-uv run qrant-qlib result query data-marketplace-datasets
+botmux result-query health
+botmux result-query catalog-stats
+botmux result-query catalog-items --type strategy --market us --status active
+botmux result-query catalog-strategy <strategy-id>
+botmux result-query catalog-factors
+botmux result-query backtests --market us --level all
+botmux result-query backtest <run-id>
+botmux result-query backtest-result <backtest-id>
+botmux result-query factor-pool
+botmux result-query workflow-tasks --status running
+botmux result-query workflow-task <task-id>
+botmux result-query research-assets
+botmux result-query data-marketplace-datasets
 ```
 
 The CLI performs GET requests only to named allow-listed routes, bounds timeout
