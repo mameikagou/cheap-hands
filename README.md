@@ -30,6 +30,14 @@ Audits plans and implementations for parallel systems, duplicated truth, directo
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mainline-drift-audit/ai-install.md and follow the instructions inside.
 ```
 
+### sandbox-dev-environment
+
+Uses the BotMux development environment correctly, distinguishing native owner sessions from Podman guests and covering the data lake, staging/publish flow, approved books, review skills, and network diagnostics.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sandbox-dev-environment/ai-install.md and follow the instructions inside.
+```
+
 ### opencode-coder
 
 Delegates code generation to cheap external models (MiniMax-M2.7, GPT-5.3-Codex) for 95% cost savings. Claude reads, dispatches, and reviews; the external model writes code.
@@ -83,6 +91,7 @@ Fetch the following URLs one by one and follow the instructions inside each:
 5. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/code-graph/ai-install.md
 6. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/learn-codebase/ai-install.md
 7. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mainline-drift-audit/ai-install.md
+8. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sandbox-dev-environment/ai-install.md
 ```
 
 ## npm (opencode-coder only)
