@@ -1,0 +1,242 @@
+# Auto-Install Instructions for AI Agents
+
+> YOU ARE AN AI AGENT. These instructions are for you, not for a human.
+> The user has asked you to install the "claude-web-design" skill.
+> Follow each step in order. Do not skip steps. Do not ask for confirmation
+> unless a step explicitly says to.
+
+## Pre-flight Checks
+
+1. Verify you have file write access to the user's home directory
+2. Check if `$HOME/.claude/skills/claude-web-design/` already exists
+   - If YES: Ask the user "Skill 'claude-web-design' already installed. Overwrite? (y/n)"
+   - If NO: Proceed
+
+## Security Declaration
+
+This installation will:
+- CREATE directory: `$HOME/.claude/skills/claude-web-design/`
+- CREATE file: `$HOME/.claude/skills/claude-web-design/SKILL.md`
+- MODIFY: Nothing. No existing files will be changed.
+
+## Installation Steps
+
+### Step 1: Create skill directory
+
+Run: `mkdir -p $HOME/.claude/skills/claude-web-design`
+
+### Step 2: Write SKILL.md
+
+Write the following content to `$HOME/.claude/skills/claude-web-design/SKILL.md`:
+
+```
+---
+name: claude-web-design
+description: 按 Claude.ai 网页的设计语言写/改前端界面——暖灰底色、衬线标题、大圆角、极少阴影、单层强调色。适用于任何要做"像 Claude 一样温暖克制"的 Web 页面、仪表盘、管理后台的场景，尤其是用户说"参考 claude.ai 的风格""界面太丑/太冷/太花"之后。规则包含可直接抄的色值、字体栈、圆角/间距档位和负面清单。
+---
+
+# Claude.ai 网页设计风格
+
+目标：页面读起来像一份排版良好的文档，而不是一架飞机驾驶舱。Claude.ai 的界面能让人感到安静，靠的是**减法**——颜色少、阴影少、边框淡、字重少。这个 skill 的核心是告诉你哪些东西不要做。
+
+## 一、设计哲学（五条，按重要性排序）
+
+1. **层级靠底色梯度，不靠阴影**。页面底、卡片、浮层用三个递进的背景色区分前后关系。阴影最多给浮层（dropdown/popover），卡片永远不用阴影。
+2. **分隔靠极淡的边框（hairline），不靠色块**。边框颜色要淡到"不找就注意不到"。
+3. **一个页面只有一个强调色**。Claude 用橙（crail/clay）。强调色只给主按钮、链接、当前选中态。如果页面上有三个以上彩色元素在抢视线，就是错了。
+4. **字重克制**。正文 400，强调 500，标题 600。700 几乎不用。粗细差就是层级差，不需要靠颜色花花绿绿。
+5. **暗色模式是暖调深灰，不是纯黑反色**。背景用带棕色调的深灰（stone 系），不是 #000 也不是冷灰。
+
+## 一·五、信息分层：页面只放给人看的东西（最重要，犯过真实错误）
+
+前端字段必须同时满足两个条件：**能帮助人做决定**，且**人方便阅读**。真实字段不等于有用字段；数据库完整不等于页面完整。
+
+- **给人看的**：结论、证据、指标、原因、时间——回答「这是什么？行不行？怎么办？」
+- **给机器看的**：sha256、代码/数据 hash、run id、服务器路径、对象关系 ID——只用于程序对账，留在数据库或内部工具
+
+### 浏览器接口也是展示边界
+
+不要以“前端不渲染”为理由把敏感或无用字段发给浏览器；用户仍能在 Network 中看到响应。服务器内部查询可以全量，浏览器 DTO 必须最小化：默认排除绝对路径、完整 hash、run id、内部对象 ID。确需审计时，另做鉴权严格的内部接口或 CLI，而不是塞进普通详情接口。
+
+**错误示例：数据库结构直接变成页面和浏览器 DTO**
+
+```json
+{
+  "status": "candidate",
+  "run_id": "c037617a37af49fe...",
+  "code_hash": "64位十六进制...",
+  "artifact": {
+    "path": "/home/admin/project/data/run/curves.parquet",
+    "sha256": "64位十六进制...",
+    "lifecycle": "intermediate_30d"
+  }
+}
+```
+
+页面再按“定义表 → 运行表 → 产物表 → 哈希表”的顺序逐字段平铺。结果是真实但不可读，同时泄露服务器目录结构。
+
+**正确示例：按用户决策重组浏览器 DTO 和页面**
+
+```json
+{
+  "conclusion": "继续观察",
+  "reason": "分年表现不稳定，尚不足以晋级",
+  "statistics": { "rank_ic_mean": 0.031, "fdr_q_value": 0.08 },
+  "incremental_value": { "partial_rank_ic_mean": 0.012 },
+  "artifact_summary": { "count": 8, "updated_at": "2026-08-16" }
+}
+```
+
+页面顺序固定为：
+
+1. **结论**：一个权威结论 + 一句话原因
+2. **这是什么**：研究问题、定义、方向、周期、参数
+3. **证据**：统计稳定性 → 增量价值 → 绩效/稳健性 → 执行可信度
+4. **背景**：数据要求、组合构成、简化后的研究过程
+
+### 同一信息的错误与正确写法
+
+| 错误 | 正确 |
+|---|---|
+| `candidate`、`active`、`succeeded` 原样展示 | `候选中`、`进行中`、`成功` |
+| `RankIC`、`FDR q` 不解释 | 首次写成「RankIC（秩相关）」「FDR q 值（多重检验修正）」 |
+| 参数 key 全翻译或完全不翻译 | `防御资产 (defensive_instrument)`，中文阅读、英文对照 |
+| 正常、警告、结论同时用多种红绿灯 | 只给最终结论着色；正常状态不报，异常才提示 |
+| 时间线展示事件 ID、双 hash | 只留时间、做了什么、结果、原因 |
+| 产物逐条展示路径、sha、run id | 只给“产物 8 个，最近更新于某日”的摘要；详情走内部工具 |
+
+### 真实事故与防复发流程
+
+2026-08 的因子详情页一次新增约 2464 行：后端返回全量，前端照单全收，平铺三个完整 hash、两列 hash 列表、事件 ID 和双 hash，并展示服务器绝对路径。测试、类型检查和构建全部通过，但页面仍然失败，因为这些检查只能证明“没炸”，不能证明“值得看”。
+
+实现详情页时按以下顺序执行：
+
+1. 先写清用户打开页面要回答的 1—3 个问题，再列字段；禁止从 DTO 字段开始设计。
+2. 先用一个真实对象做信息骨架，再接全量数据；大页面不得接口、模型、路由、全部区块一次铺完后才看效果。
+3. 用至少四种真实状态验收：成功、观察、阻塞、无数据/无运行；空值不补零、不造曲线。
+4. 检查浏览器响应，确认不存在绝对路径、完整 hash、run id 和内部 ID。
+5. 发布前实际查看 375px 手机和桌面截图；十秒内说不出“它是什么、结论是什么、证据为什么”，就不发布。
+
+## 二、颜色
+
+### 官方品牌色（Anthropic 官方 brand-guidelines skill 发布值）
+
+| 用途 | 色值 | 说明 |
+|------|------|------|
+| 深色文字/深底 | `#141413` | 不是纯黑 |
+| 浅色底 | `#faf9f5` | 象牙白，不是纯白 |
+| 中灰 | `#b0aea5` | 次要元素 |
+| 浅灰 | `#e8e6dc` | 弱背景 |
+| 主强调橙 | `#d97757` | crail/clay，唯一主 accent |
+| 次强调蓝 | `#6a9bcc` | 极少用 |
+| 三强调绿 | `#788c5d` | 极少用 |
+
+### 网页 UI 推导色（claude.ai 界面实测风格）
+
+claude.ai 网页用的不是纯白底，是带一点点黄/棕的"羊皮纸"暖白：
+
+- 页面底（canvas）：`#fafaf9` ~ `#faf9f5`（light）/ `#0c0a09` ~ `#141413`（dark）
+- 卡片/面板（surface）：`#ffffff`（light）/ `#1c1917`（dark）
+- 浮层（elevated）：`#ffffff` + hairline 边框（light）/ `#292524`（dark）
+- 边框：light 下约 `#e7e5e4`，dark 下约 `#292524` —— 都要求是"接近背景色"的淡
+
+落地建议：直接用 Tailwind 的 **stone** 调色板做中性色（它就是暖灰），不要混用 gray（冷灰）。一套界面里 stone 和 gray 同时出现是新手最容易犯的错。
+
+### 功能色
+
+绿表肯定、红表否定、橙/黄表警告、蓝表信息。功能色淡用：浅色模式用 50/100 档做底、600 档做字；深色模式用 10%~15% 透明度做底。功能色不是装饰色，不表语义的元素不许用彩色。
+
+## 三、字体
+
+- **标题用衬线（serif）**，正文/UI 用无衬线——这是 Claude 区别于其他 AI 产品最直观的一点，带来"编辑部/书"的感觉。页面大标题和卡片/区块标题都用衬线；但衬线标题**不要配 uppercase**（衬线给大小写混排设计，全大写可读性差），要层级用字重和字号。
+  - claude.ai 实际用的是商业字体（Tiempos 类衬线 + Styrene 类无衬线），免费用法：标题 `Georgia, 'Times New Roman', serif` 或系统衬线栈；正文 `Inter` 或系统无衬线栈。
+  - 官方文档类场景（PPT/报告）用 Poppins（标题）+ Lora（正文）。
+- **正文字号 15px**，不是 14 也不是 16。行高 1.6 左右。
+- **数据、代码、ID 用等宽字体** + `tabular-nums`（数字等宽，跳动时不抖）。
+- 眉标（eyebrow，标题上方的小字分类）：`text-xs uppercase tracking-wide` + 次要文字色。这是 Claude 页面标题区的固定形制。
+
+## 四、圆角 / 间距 / 阴影
+
+- 圆角档位：按钮/输入框 6px（`rounded-md`），卡片 12~16px（`rounded-lg`/`rounded-xl`），徽章/头像 `rounded-full`。聊天输入框这种"大容器"可以到 24px。**全站圆角档位不超过 4 种。**
+- 间距用 4px 基准倍数。卡片内边距 20px（`p-5`），卡片之间 24px（`gap-6`），列表项之间 12~16px。留白比你想的再多一档通常更好。
+- 阴影：默认无。只有浮层（下拉、弹窗）允许一层淡阴影。禁止 `shadow-md` 及以上给普通卡片。
+
+## 五、组件细节
+
+- **按钮**：主按钮 = 深色底白字（light 模式近黑 #141413 系 / dark 模式暖白底深字），不是橙底——Claude.ai 的主按钮就是深色的，橙只做小面积点缀；次按钮 = 透明底 + hairline 边框；ghost = 纯文字 hover 出底。三种够了。
+- **输入框**：底色比页面底略深或略浅一档（制造"凹进去"感），hairline 边框，focus 时一圈强调色 ring。
+- **选中态**：导航当前项用浅灰底（`bg-selected`），不要用彩色底。
+- **徽章/标签**：hairline 边框 + 浅灰底 + 小字号，不要实色填充的彩色 badge。
+- **表格**：只有行与行之间的 hairline 分隔线，不要竖线、不要斑马线。
+- **空状态/加载**：骨架屏用 breathe 动画的灰色块，不用 spinner 满屏转。
+
+## 六、暗色模式
+
+- 只重新定义语义层 token（背景/文字/边框的语义），组件代码一行不改。如果暗色模式要去改组件，说明 token 分层没做好。
+- 暗色背景保持 stone 暖调：`#0c0a09`（canvas）、`#1c1917`（surface）、`#292524`（elevated）。
+- 强调橙在暗色下稍微调亮一点保证对比度。
+
+## 七、移动端
+
+- 触控目标 ≥44px。
+- 手机底部 tab 栏、平板纯图标窄侧栏（64px）、桌面完整侧栏——三档，不是两档。
+- 根容器高度用 `100dvh` 不用 `100vh`（手机浏览器地址栏会吃掉 vh）。
+- 底部栏加 `padding-bottom: env(safe-area-inset-bottom)`。
+
+## 负面清单（做了就不是 Claude 风格）
+
+- ❌ 纯白 `#fff` 页面底 / 纯黑 `#000` 文字
+- ❌ 冷灰调色板（Tailwind gray/slate）和暖灰（stone）混用
+- ❌ 卡片带明显阴影
+- ❌ 渐变背景
+- ❌ 一个页面多种强调色、实色彩色 badge 一堆
+- ❌ 字重 700+ 大面积使用
+- ❌ 花哨动画（弹簧、视差、粒子）；交互反馈 150~300ms 淡入淡出就够
+- ❌ emoji 当图标（用 lucide 这类线性图标库）
+- ❌ 硬编码色值散在组件里——颜色必须走 token/变量，方便整体换肤和暗色映射
+- ❌ 哈希、run id、服务器路径、内部枚举原文上页面——给机器看的东西不给人看
+- ❌ 一行多个红绿灯重复表态（状态圆点 + 指标染色 + 结论徽章同时上色）
+- ❌ 没有 diff 的"迭代历史/版本时间线"——版本号+一句改动说明+指标对比却看不出到底改了什么，是装饰品；要么展示真实参数/代码 diff，要么不展示
+
+## 落地检查清单
+
+写完页面自查：
+0. 先做信息验收：页面每个字段都能帮助决策吗？浏览器响应里有没有绝对路径、完整 hash、run id、内部 ID？
+1. 用成功、观察、阻塞、无数据/无运行等真实状态逐一查看了吗？空值有没有被伪造成 0 或正常？
+2. 实际查看 375px 手机和桌面截图了吗？用户能否在十秒内说出对象、结论和主要证据？
+3. 页面底是不是暖白/暖黑，不是纯白纯黑？
+4. 全页彩色元素是不是只有强调橙（小面积）+ 必要的功能色？主按钮是不是深色底？
+5. 卡片是不是无阴影、只有 hairline 边框？
+6. 大标题和卡片标题是不是衬线？正文 15px？
+7. 暗色模式切换后有没有"看起来很脏"的地方？
+8. 手机上底部栏贴不贴底？触控目标够不够大？
+
+```
+
+
+### Ensure skills directory is registered
+
+Read `$HOME/.claude/settings.json`. Check if the `"skills"` array contains
+a path that covers `$HOME/.claude/skills/`. If not, add `"$HOME/.claude/skills"`
+to the array.
+
+### Verify installation
+
+Read `$HOME/.claude/skills/claude-web-design/SKILL.md` and confirm:
+- YAML frontmatter has valid `name` and `description` fields
+- File content is not empty or corrupted
+
+### Report to user
+
+Tell the user:
+"claude-web-design installed successfully!
+- Location: ~/.claude/skills/claude-web-design/
+- Trigger: 按 Claude.ai 网页的设计语言写/改前端界面——暖灰底色、衬线标题、大圆角、极少阴影、单层强调色。适用于任何要做"像 Claude 一样温暖克制"的 Web 页面、仪表盘、管理后台的场景，尤其是用户说"参考 claude.ai 的风
+- To uninstall: delete the ~/.claude/skills/claude-web-design/ directory"
+
+## Rollback
+
+If ANY step fails:
+1. Delete the `$HOME/.claude/skills/claude-web-design/` directory if it was created
+2. Tell the user exactly which step failed and why
+3. Do NOT leave partial installations behind
