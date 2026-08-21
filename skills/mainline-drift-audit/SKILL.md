@@ -158,6 +158,7 @@ Require every persistent output to name its reader before choosing a format.
 - Put machine state, identities, parameters, metrics, errors, hashes, attempts, locks, and object relationships in the repository's one official database or registry.
 - Put large tabular details and time series in the official data lake or Parquet store, and register their path, schema, hash, size, and lifecycle in the database.
 - Keep transient logs, caches, and rebuildable intermediates temporary with a TTL or deterministic cleanup; do not persist garbage merely because file ledgers are forbidden.
+- Treat tests as non-production readers: redirect every writer to a test temporary root, then run the writer twice and prove repository data and artifact roots remain byte-for-byte unchanged.
 - Treat a human report as a projection of database facts, not a second authority. Store only its path and hash in the database when traceability is needed.
 
 Block a proposal that creates persistent Markdown, YAML, JSON, JSONL, or CSV for content with no explicit human reader when the content belongs in the official database. Block a dashboard or API that reconstructs formal state by scanning directories when the state should be queried from the database.
