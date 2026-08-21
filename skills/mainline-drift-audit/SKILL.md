@@ -1,6 +1,6 @@
 ---
 name: mainline-drift-audit
-description: Audit technical proposals and repository implementations for mainline drift, parallel systems, repeated wheel-building, one-off research infrastructure, duplicate CLIs/configs/tests/reports, fake formal results, data-lake bypasses, incorrect paths, and unbounded artifacts. Use before approving a plan or architecture migration, after implementation, during cleanup, before research campaigns or backtest changes, or whenever the user asks whether a proposal or codebase is “走主线”, “反复拉屎”, “自造轮子”, “屎山”, or accumulating unexplained disk usage.
+description: Audit technical proposals and repository implementations for mainline drift, parallel systems, adopt-before-build and dependency reuse, repeated wheel-building, one-off research infrastructure, duplicate CLIs/configs/tests/reports, fake formal results, data-lake bypasses, incorrect paths, worktree baselines, protected planning evidence, and unbounded artifacts. Use before approving a plan or architecture migration, after implementation, during cleanup, before research campaigns or backtest changes, or whenever the user asks whether a proposal or codebase is “走主线”, “反复拉屎”, “自造轮子”, “屎山”, or accumulating unexplained disk usage.
 ---
 
 # Mainline Drift Audit
@@ -17,6 +17,41 @@ Answer four questions:
 4. What exact constraint would stop recurrence?
 
 Treat a technically feasible proposal that violates the architecture as a finding. Treat working code that violates the architecture as a finding. Do not excuse duplication because a plan looks thorough or tests pass.
+
+## Adopt before build and reuse gate
+
+Before approving or implementing any new engine, broker, ledger, backtester, registry, CLI, or data pipeline, establish whether the capability already exists. Do not accept “temporary”, “small”, “research-only”, or “compatible” as evidence of a gap.
+
+1. Inventory the live repository path: package boundaries, entrypoints, catalogs, registries, writers, tests, and configured output roots.
+2. Read declared dependencies and lockfiles. Check whether the repository already depends on an official or mature open-source implementation that owns the capability.
+3. Trace the existing end-to-end call path and inspect the official implementation's documented limits. Search mature external implementations only after checking the repository's own path.
+4. Record a capability-gap matrix before allowing new code:
+
+| Capability | Existing repository path | Declared dependency or mature implementation | Verified gap | Thin adapter allowed? | Owner and deletion target | Evidence/acceptance test |
+|---|---|---|---|---|---|---|
+| matching/order/fill/account/fees/PnL | | | | | | |
+| data/factor/signal/target weights | | | | | | |
+| registry/CLI/API/artifacts | | | | | | |
+
+5. Choose exactly one decision for each row:
+
+- `REUSE`: extend or call the official path.
+- `ADAPT`: add only a thin boundary adapter for the verified gap; it must not become a second owner of execution state.
+- `BLOCKED`: the claimed gap is unverified, or the proposal would build a replacement engine, broker, ledger, accounting path, registry, or parallel surface.
+
+An explicit gap permits a thin adapter, not a shadow implementation. If the gap is in matching, order lifecycle, fills, account state, fees, or PnL, stop and escalate the formal-engine decision instead of recreating that responsibility.
+
+## Engine ownership boundary
+
+When an official or mature external engine is adopted, it owns matching, order lifecycle, fills, cash and positions, margin, fees, corporate actions, valuation, and PnL. Self-owned code may provide only:
+
+- source/raw/canonical data preparation and validation;
+- factor, model, or signal calculation;
+- public `target_weights` or equivalent target intent;
+- a thin adapter that maps the public contract into the approved engine;
+- result registration and report projections from the authoritative registry.
+
+Do not add a self-built broker, paper account, order/fill ledger, fee calculator, NAV/PnL calculator, shadow company-action account, or compatibility runtime around the official engine. If the engine cannot represent a required rule, fail closed and record the gap; do not silently maintain an external shadow state.
 
 ## Select the audit mode
 
@@ -55,12 +90,15 @@ Check for these failure patterns:
 - Worktrees contain divergent architectural changes that have not been reconciled.
 - A proposal claims a capability is missing without checking the existing implementation.
 - A proposal introduces a new package, CLI, registry, database, config root, artifact root, report schema, or engine when the existing mainline can be extended.
+- A proposal approves a new build without a capability-gap matrix covering repository code, declared dependencies, and official or mature external implementations.
 - A proposal adds dual-write or compatibility behavior without an owner, deletion target, and same-phase exit condition.
 - A proposal describes additions in detail but does not identify which old paths become invalid and must be removed.
 - A proposal defines directories and file formats before defining the business capability, source of truth, and consuming path.
 - A proposal makes every signal date, experiment, phase, or candidate create another directory or document bundle.
 - A proposal has no disk budget, retention rule, path boundary, failure cleanup, or promoted-result policy.
 - A proposal's tests validate file generation rather than correctness, engine identity, timing integrity, and mainline reuse.
+- A replacement deletes or compresses protected planning, human-authored research/failure/history documents, explicitly retained human decision reports, canonical data, or historical decisions instead of preserving them as evidence.
+- An audit uses a dirty main worktree or a mixed-agent worktree as its baseline.
 
 ## Proposal audit
 
@@ -145,6 +183,19 @@ Require the plan to state:
 
 If a generated file has no named reader, classify it as unnecessary. If a large intermediate has no cleanup trigger, block the plan.
 
+## Same-phase replacement and protected evidence
+
+When a new mainline replaces an old implementation, freeze the replacement list before execution. Delete the replaced production code, CLI/API entrypoints, configs, imports, catalog entries, and corresponding tests in the same phase. Remove or block the old command; do not leave compatibility aliases or a second path “for now”.
+
+Preserve evidence that explains what happened: `.planning/` files, human-authored research conclusions, failure records, historical decisions, and human-authored reports explicitly retained as decision evidence. Do not delete, squash, compress, or rewrite those records to hide an obsolete path. Append a `superseded` or `retired` marker, link the replacement, and label old commands or paths as historical and non-runnable. Treat generated or rebuildable runtime reports under artifact/report roots as ordinary outputs: require a reader, lifecycle, retention rule, and cleanup decision, and allow their deletion when replaced. Keep canonical data and promoted results unless a separate, explicit data-retention decision authorizes their removal.
+
+For an implementation audit, compare `git diff --name-status` with both lists:
+
+- execution surfaces allowed to be deleted now;
+- protected evidence that must have no delete status.
+
+Treat a protected delete, an active stale entrypoint, or a preserved document that still presents a retired command as current as a failed replacement gate.
+
 ### Detect document-driven architecture
 
 Block plans that primarily deliver a directory taxonomy or document bundle. Four analysis steps do not justify four storage systems.
@@ -171,6 +222,28 @@ Use:
 - `BLOCKED`: creates a parallel mainline, duplicated truth, fake formal path, unbounded artifacts, compatibility trap, or document/file system instead of capability.
 
 Return required plan edits as concise replacement decisions. Do not rewrite or save the plan unless asked.
+
+## Worktree and baseline gate
+
+Do not establish an audit baseline from a dirty or shared worktree.
+
+1. Check `git status --short --branch`, `git worktree list --porcelain`, and the collaboration/agent status before reviewing a change.
+2. If the main worktree is dirty or another agent is working on the repository, wait for that work to commit. Do not infer a baseline from mixed uncommitted files, and do not clean, reset, stash, or restore another agent's work.
+3. After the owner identifies the acceptance commit, create an independent worktree from that exact commit and perform the audit there. Use a separate worktree/branch for any authorized repair.
+4. Record the baseline commit, worktree path, dirty-state result, and active-agent result in the audit. If the acceptance commit or an isolated worktree is unavailable, return `WAITING`/`BLOCKED` rather than claiming a verified baseline.
+
+This gate applies before repository, implementation, and full audits and before cleanup or migration changes. A focused proposal audit may inspect the proposal and a clean source snapshot without creating a worktree, but must state that no implementation baseline was reviewed.
+
+## Execution delegation
+
+Use the execution strategy that matches the audit mode and the tools exposed by the environment:
+
+- A small `proposal` audit may be completed by the main agent.
+- For `repository`, `implementation`, or `full` audits, detect whether `luna-worker` is available. When it is available, delegate the repository/full/implementation audit or authorized repair to Luna with its maximum quality/model setting. Give it the frozen scope, official mainline, acceptance commit/worktree, and protected-file list; do not delegate those decisions implicitly.
+- The main agent remains responsible for freezing the scope, official path, dependency/reuse decision, acceptance criteria, and protected-evidence policy. Review Luna's raw findings, proposed diff, and test output before accepting anything.
+- If Luna is unavailable, perform the work directly and record the fallback. Luna unavailability is not a blocker.
+
+Never grant a delegated worker authority to touch unrelated dirty files, protected evidence, or an unapproved worktree. Keep the same read-only or implementation authorization that the user gave the main agent.
 
 ## Workflow
 
@@ -275,6 +348,12 @@ For every finding include:
 - exact action: delete, merge into mainline, make transient, share once, or retain;
 - recurrence guard: code assertion, allowlist, quota, lifecycle rule, or architecture test.
 
+Every audit must also state:
+
+- `Dependency/reuse decision`: `REUSE`, `ADAPT`, or `BLOCKED`, with the capability-gap matrix, declared dependencies, official/mature implementation checked, and the owner of each truth.
+- `Planning-preservation verdict`: `PASS` only when `.planning/`, human-authored research/failure/history documents, and human-authored reports explicitly retained as decision evidence are retained or explicitly marked superseded; otherwise `BLOCKED`. Generated or rebuildable runtime reports are judged under the artifact lifecycle and retention checks, not protected by this verdict.
+- `Baseline`: acceptance commit, isolated worktree, dirty-state result, and whether another agent was active. Use `WAITING`/`BLOCKED` when the worktree gate was not satisfied.
+
 Use these severities:
 
 - `P0`: false formal result, data corruption/loss, future leakage, destructive cleanup risk.
@@ -287,6 +366,9 @@ Finish with a compact verdict:
 ```text
 Proposal: PASS/REVISE/BLOCKED/NOT_REVIEWED
 Mainline: PASS/BLOCKED
+Dependency/reuse: REUSE/ADAPT/BLOCKED
+Baseline: PASS/WAITING/BLOCKED
+Planning preservation: PASS/BLOCKED
 Artifacts: PASS/BLOCKED
 Data safety: PASS/BLOCKED
 Delete now: <exact targets or none>
