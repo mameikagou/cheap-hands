@@ -54,7 +54,7 @@ Read `$HOME/.claude/skills/mainline-drift-audit/SKILL.md` and confirm:
 Tell the user:
 "mainline-drift-audit installed successfully!
 - Location: ~/.claude/skills/mainline-drift-audit/
-- Trigger: Audit technical proposals and repository implementations for mainline drift, parallel systems, repeated wheel-building, 
+- Trigger: Audit technical proposals and repository implementations for mainline drift, parallel systems, adopt-before-build and de
 - To uninstall: delete the ~/.claude/skills/mainline-drift-audit/ directory"
 
 ## Rollback
