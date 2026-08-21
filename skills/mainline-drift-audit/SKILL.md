@@ -1,6 +1,6 @@
 ---
 name: mainline-drift-audit
-description: Audit technical proposals and repository implementations for mainline drift, parallel systems, adopt-before-build and dependency reuse, repeated wheel-building, one-off research infrastructure, duplicate CLIs/configs/tests/reports, fake formal results, data-lake bypasses, incorrect paths, worktree baselines, protected planning evidence, and unbounded artifacts. Use before approving a plan or architecture migration, after implementation, during cleanup, before research campaigns or backtest changes, or whenever the user asks whether a proposal or codebase is “走主线”, “反复拉屎”, “自造轮子”, “屎山”, or accumulating unexplained disk usage.
+description: Audit technical proposals and repository implementations for mainline drift, parallel systems, adopt-before-build and dependency reuse, repeated wheel-building, one-off research infrastructure, duplicate CLIs/configs/tests/reports, fake formal results, data-lake bypasses, incorrect paths, protected planning evidence, and unbounded artifacts. Use before approving a plan or architecture migration, after implementation, during cleanup, before research campaigns or backtest changes, or whenever the user asks whether a proposal or codebase is “走主线”, “反复拉屎”, “自造轮子”, “屎山”, or accumulating unexplained disk usage.
 ---
 
 # Mainline Drift Audit
@@ -58,7 +58,7 @@ Do not add a self-built broker, paper account, order/fill ledger, fee calculator
 Choose the smallest mode that answers the request:
 
 - `proposal`: audit a technical plan, design discussion, migration proposal, or architecture document before implementation;
-- `implementation`: audit a diff, branch, worktree, commit range, or completed implementation against the approved direction;
+- `implementation`: audit a diff, branch, commit range, or completed implementation against the approved direction;
 - `repository`: audit existing architecture, entrypoints, stale systems, and disk artifacts;
 - `full`: audit the proposal, implementation, repository residue, and artifact lifecycle together.
 
@@ -79,7 +79,7 @@ Check for these failure patterns:
 - Large intermediate data has no TTL, quota, promotion rule, shared cache, or garbage collection.
 - Failed and rejected experiments retain the same large artifacts as promoted results.
 - Relative/absolute path bugs recreate `home/...`, `apps/...`, or the repository itself inside an output directory.
-- Default paths depend on the current working directory and silently write to the wrong worktree.
+- Default paths depend on the current working directory and silently write to the wrong repository path.
 - Mock, random, fabricated, placeholder, or demo output is reachable from a formal CLI or product page.
 - Runtime business logic bypasses the local data lake and downloads external data directly.
 - Multiple MLflow stores, provider copies, catalogs, registries, or “latest” pointers describe the same state.
@@ -87,7 +87,6 @@ Check for these failure patterns:
 - Tests lock in a wrong architecture by asserting duplicate files or parallel entrypoints exist.
 - Documentation is duplicated, stale, or treated as stronger evidence than live code.
 - Cleanup code deletes planning, research conclusions, reports, canonical data, or promoted results together with rebuildable caches.
-- Worktrees contain divergent architectural changes that have not been reconciled.
 - A proposal claims a capability is missing without checking the existing implementation.
 - A proposal introduces a new package, CLI, registry, database, config root, artifact root, report schema, or engine when the existing mainline can be extended.
 - A proposal approves a new build without a capability-gap matrix covering repository code, declared dependencies, and official or mature external implementations.
@@ -98,7 +97,6 @@ Check for these failure patterns:
 - A proposal has no disk budget, retention rule, path boundary, failure cleanup, or promoted-result policy.
 - A proposal's tests validate file generation rather than correctness, engine identity, timing integrity, and mainline reuse.
 - A replacement deletes or compresses protected planning, human-authored research/failure/history documents, explicitly retained human decision reports, canonical data, or historical decisions instead of preserving them as evidence.
-- An audit uses a dirty main worktree or a mixed-agent worktree as its baseline.
 
 ## Proposal audit
 
@@ -179,7 +177,7 @@ Require the plan to state:
 - failure and interruption cleanup;
 - path root and containment rule;
 - migration and rollback behavior;
-- worktree/branch synchronization order.
+- branch synchronization order.
 
 If a generated file has no named reader, classify it as unnecessary. If a large intermediate has no cleanup trigger, block the plan.
 
@@ -222,28 +220,6 @@ Use:
 - `BLOCKED`: creates a parallel mainline, duplicated truth, fake formal path, unbounded artifacts, compatibility trap, or document/file system instead of capability.
 
 Return required plan edits as concise replacement decisions. Do not rewrite or save the plan unless asked.
-
-## Worktree and baseline gate
-
-Do not establish an audit baseline from a dirty or shared worktree.
-
-1. Check `git status --short --branch`, `git worktree list --porcelain`, and the collaboration/agent status before reviewing a change.
-2. If the main worktree is dirty or another agent is working on the repository, wait for that work to commit. Do not infer a baseline from mixed uncommitted files, and do not clean, reset, stash, or restore another agent's work.
-3. After the owner identifies the acceptance commit, create an independent worktree from that exact commit and perform the audit there. Use a separate worktree/branch for any authorized repair.
-4. Record the baseline commit, worktree path, dirty-state result, and active-agent result in the audit. If the acceptance commit or an isolated worktree is unavailable, return `WAITING`/`BLOCKED` rather than claiming a verified baseline.
-
-This gate applies before repository, implementation, and full audits and before cleanup or migration changes. A focused proposal audit may inspect the proposal and a clean source snapshot without creating a worktree, but must state that no implementation baseline was reviewed.
-
-## Execution delegation
-
-Use the execution strategy that matches the audit mode and the tools exposed by the environment:
-
-- A small `proposal` audit may be completed by the main agent.
-- For `repository`, `implementation`, or `full` audits, detect whether `luna-worker` is available. When it is available, delegate the repository/full/implementation audit or authorized repair to Luna with its maximum quality/model setting. Give it the frozen scope, official mainline, acceptance commit/worktree, and protected-file list; do not delegate those decisions implicitly.
-- The main agent remains responsible for freezing the scope, official path, dependency/reuse decision, acceptance criteria, and protected-evidence policy. Review Luna's raw findings, proposed diff, and test output before accepting anything.
-- If Luna is unavailable, perform the work directly and record the fallback. Luna unavailability is not a blocker.
-
-Never grant a delegated worker authority to touch unrelated dirty files, protected evidence, or an unapproved worktree. Keep the same read-only or implementation authorization that the user gave the main agent.
 
 ## Workflow
 
@@ -352,13 +328,12 @@ Every audit must also state:
 
 - `Dependency/reuse decision`: `REUSE`, `ADAPT`, or `BLOCKED`, with the capability-gap matrix, declared dependencies, official/mature implementation checked, and the owner of each truth.
 - `Planning-preservation verdict`: `PASS` only when `.planning/`, human-authored research/failure/history documents, and human-authored reports explicitly retained as decision evidence are retained or explicitly marked superseded; otherwise `BLOCKED`. Generated or rebuildable runtime reports are judged under the artifact lifecycle and retention checks, not protected by this verdict.
-- `Baseline`: acceptance commit, isolated worktree, dirty-state result, and whether another agent was active. Use `WAITING`/`BLOCKED` when the worktree gate was not satisfied.
 
 Use these severities:
 
 - `P0`: false formal result, data corruption/loss, future leakage, destructive cleanup risk.
 - `P1`: parallel engine/mainline, unbounded growth, runtime path escape, fake production entrypoint.
-- `P2`: duplicate entrypoint/config/store, stale code, repeated artifact, worktree drift.
+- `P2`: duplicate entrypoint/config/store, stale code, or repeated artifact.
 - `P3`: naming, minor residue, or documentation hygiene.
 
 Finish with a compact verdict:
@@ -367,7 +342,6 @@ Finish with a compact verdict:
 Proposal: PASS/REVISE/BLOCKED/NOT_REVIEWED
 Mainline: PASS/BLOCKED
 Dependency/reuse: REUSE/ADAPT/BLOCKED
-Baseline: PASS/WAITING/BLOCKED
 Planning preservation: PASS/BLOCKED
 Artifacts: PASS/BLOCKED
 Data safety: PASS/BLOCKED
@@ -389,7 +363,6 @@ Prefer enforceable guards over more documentation:
 - automatic cleanup in `finally` for transient intermediates;
 - promotion-aware retention: rejected runs keep metrics, promoted runs keep only necessary reproducibility assets;
 - path containment checks using resolved paths before every write;
-- architecture tests that fail on new top-level packages, CLIs, catalogs, or artifact roots;
-- a worktree synchronization check before cleanup or migration commits.
+- architecture tests that fail on new top-level packages, CLIs, catalogs, or artifact roots.
 
 Do not propose a new management framework merely to enforce these rules. Add the smallest guard to the existing mainline.
