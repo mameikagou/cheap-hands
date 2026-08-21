@@ -46,6 +46,14 @@ Delegates code generation to cheap external models (MiniMax-M2.7, GPT-5.3-Codex)
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/opencode-coder/ai-install.md and follow the instructions inside.
 ```
 
+### dsh-worker-review
+
+Delegates bounded coding and PR implementation to DeepSeek Harness models such as OpenRouter Ox Alpha, while Sol, Codex, or Claude retains workspace selection, diff review, testing, and the final decision. It runs in the exact checkout supplied by the reviewer and never creates Git worktrees, branches, commits, or PRs.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/dsh-worker-review/ai-install.md and follow the instructions inside.
+```
+
 ### write-skill
 
 Skill architect that helps you create new Claude Code skills conforming to Anthropic's spec. Extracts requirements through minimal interaction and outputs compliant SKILL.md files.
@@ -92,6 +100,7 @@ Fetch the following URLs one by one and follow the instructions inside each:
 6. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/learn-codebase/ai-install.md
 7. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mainline-drift-audit/ai-install.md
 8. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sandbox-dev-environment/ai-install.md
+9. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/dsh-worker-review/ai-install.md
 ```
 
 ## npm (opencode-coder only)
