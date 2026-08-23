@@ -1,11 +1,11 @@
 ---
 name: delegate-luna-worker
-description: Install or configure the luna-worker Agent and delegate clearly bounded work to GPT-5.6 Luna with max reasoning. Use when the user explicitly asks to set up or use Luna, Luna Max, luna-worker, or a Luna subagent.
+description: Install or configure the luna-worker Agent and delegate clearly bounded work to GPT-5.6 Luna with max reasoning under active main-agent oversight. Use when the user explicitly asks to set up or use Luna, Luna Max, luna-worker, or a Luna subagent, especially for implementation that needs a detailed prompt, strict change boundaries, protection against over-design, shared-worktree coordination, and direct main-agent intervention when quality is low.
 ---
 
 # Delegate Luna Worker
 
-Use the custom Agent defined at `~/.codex/agents/luna-worker.toml`. This skill installs or repairs that configuration when explicitly requested, then coordinates delegation. The Agent configuration owns the model, reasoning effort, and worker behavior.
+Use the custom Agent defined at `~/.codex/agents/luna-worker.toml`. This skill installs or repairs that configuration when explicitly requested, then coordinates delegation. The Agent configuration owns the model, reasoning effort, and worker behavior. The main agent remains an active technical owner: it controls direction and acceptance, participates in implementation when useful, and directly repairs low-quality or over-designed work when that is faster and safer.
 
 ## Install or repair the Agent
 
@@ -22,9 +22,9 @@ model_reasoning_effort = "max"
 developer_instructions = '''
 You are a focused worker for clearly bounded delegated tasks.
 
-Treat the delegation as a contract. Identify the requested outcome, owned files or responsibility, constraints, required validation, and expected handoff from the task message. Work only within that boundary. You are not alone in the workspace: preserve unrelated and concurrent changes, never revert work you do not own, and adapt to changes made by other agents.
+Treat the delegation as a contract. Identify the requested outcome, owned files or responsibility, constraints, required validation, and expected handoff from the task message. Work only within that boundary. You are not alone in the workspace: preserve unrelated and concurrent changes, never revert work you do not own, and adapt to changes made by other agents. The main agent may inspect and directly edit the shared worktree while you run; preserve those edits, do not revert them, and continue around them.
 
-Inspect the minimum relevant context, then execute autonomously. For implementation tasks, make the requested in-scope edits and run proportionate non-destructive checks. For research, diagnosis, or review tasks, remain read-only unless edits are explicitly requested. Do not broaden the task, perform external writes, make destructive changes, or create commits unless the delegation explicitly authorizes them.
+Inspect the minimum relevant context, then execute autonomously. For implementation tasks, make the smallest complete change through the existing live path and run proportionate non-destructive checks. Reuse before adding abstractions. Do not generalize for hypothetical future modes or add frameworks, managers, adapter hierarchies, compatibility paths, config layers, helper packages, report systems, broad refactors, or parallel ownership unless the task contract explicitly authorizes the exact surface. For research, diagnosis, or review tasks, remain read-only unless edits are explicitly requested. Do not broaden the task, perform external writes, make destructive changes, or create commits unless the delegation explicitly authorizes them.
 
 If a necessary ambiguity cannot be resolved from local context without risking a materially different result, stop and report the exact blocker and the smallest decision needed. Otherwise, make reasonable local assumptions and state any assumption that materially affects the result.
 
@@ -43,15 +43,22 @@ If no TOML parser is available, report that syntax validation is pending instead
 
 ## Prepare the delegation
 
-Delegate only when the user's request explicitly authorizes Luna or subagent work. Convert the requested work into a compact task contract containing:
+Delegate only when the user's request explicitly authorizes Luna or subagent work. Before writing the task, inspect the current repository, worktree, applicable instructions, dirty files, live process or data state, and approved architecture. Read [delegation-contract.md](references/delegation-contract.md) completely, then convert the relevant sections into a detailed, task-specific prompt. A short generic prompt is not sufficient for repository, migration, or data work.
+
+The prompt must make change boundaries operational and contain:
 
 - The concrete outcome and stopping condition.
-- Owned files, modules, or read-only responsibility.
-- Relevant constraints and out-of-scope boundaries.
-- Required validation and expected handoff.
-- A reminder that other agents may be editing the workspace and their changes must be preserved.
+- Exact repository and worktree paths, branch state, known commits, dirty files, completed work, failed attempts, and live runtime or data facts already verified.
+- Owned files, modules, responsibilities, existing entrypoints, dependencies, and data or artifact roots that Luna may change or write.
+- Exact protected paths and unrelated work that Luna must not stage, rewrite, reformat, move, or delete.
+- The approved architecture and existing live path that must be reused.
+- Prohibited additions such as new top-level packages, duplicate CLIs, parallel databases, compatibility layers, one-off scripts, speculative abstractions, and unrelated refactors.
+- Ordered execution steps, required validation, real completion evidence, progress checkpoints, escalation conditions, and expected handoff.
+- A reminder that the main agent may directly intervene in the shared worktree and Luna must preserve those edits.
 
 Resolve details from the current context when safe. Ask the user only if an unresolved choice would materially change the result or ownership boundary.
+
+Do not rely on phrases such as “follow the existing style” or “avoid over-engineering” without naming the exact allowed and forbidden surfaces for the current task. Before authorizing any new surface, require the prompt to identify the verified gap, reader, owner, lifecycle, replacement target, and smallest acceptance test.
 
 ## Spawn the worker
 
@@ -68,6 +75,8 @@ If the runtime reports `unknown agent_type 'luna-worker'`, the current task's Ag
 
 ## Coordinate and verify
 
-Continue independent local work while Luna runs when useful and conflict-free. Otherwise wait for its handoff, preferring a longer bounded wait over repeated polling.
+Do not wait passively for Luna's final handoff. Continue useful conflict-free work and inspect the shared worktree, diff, tests, processes, and artifacts at natural checkpoints. Freeze the smallest acceptance set before implementation and prevent Luna from turning review concerns into extra gates or a broader redesign.
 
-Check the returned outcome, changed files or evidence, validation results, and remaining risks against the task contract. Use `followup_task` on the same Agent for a narrowly scoped correction when needed. Do not duplicate work already completed by the worker. Report that Luna was used and summarize the verified result; distinguish the worker's claims from validation performed by the orchestrator.
+When Luna drifts or over-designs, send a concrete correction immediately, naming the files, behavior, and smaller approved direction. If Luna's implementation is materially low quality, unsafe, stuck in repeated churn, or unnecessarily heavy, directly modify or replace the affected work. Tell Luna before or immediately after intervening, identify the main-agent-owned edits, and instruct it to continue without reverting them. Delegation does not prevent the main agent from participating in the main implementation path.
+
+Treat Luna's report as a claim, not proof. Check the authoritative diff and runtime state against the contract at matching scope. Verify that the requested outcome works through the approved path, protected work remains untouched, tests and real evidence cover the acceptance set, and no speculative framework or duplicate owner remains. Use `followup_task` for a narrow correction when that is more efficient; otherwise repair the issue directly and reassign Luna to the next bounded task or to evidence collection. Report that Luna was used and distinguish its claims from validation performed by the main agent.
