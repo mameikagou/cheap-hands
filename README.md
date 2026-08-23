@@ -24,7 +24,7 @@ Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanit
 
 ### mining-factors
 
-Mines factors and implements the complete trading strategy: factor combination, entry, holding, replacement, exit, sizing, costs, and sample-out-of-sample evaluation. It keeps engineering work subordinate to the strategy result.
+Mines factors and implements the complete trading strategy: factor combination, entry, holding, replacement, exit, sizing, costs, and sample-out-of-sample evaluation. It keeps a bounded, source-backed chapter synthesis of the original factor-investing book and corrects it in place as the source is reread.
 
 ```
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mining-factors/ai-install.md and follow the instructions inside.

@@ -1,6 +1,6 @@
 ---
 name: mining-factors
-description: Use when mining, discovering, iterating, batch-testing, comparing, combining, transferring, or implementing quantitative factors and factor strategies in the analyze repository. The skill focuses on producing an actual factor strategy—factor inputs, combination, entry, holding, replacement, exit, sizing, costs, and sample-out-of-sample evaluation—without turning research into an infrastructure, permission, audit, registry, or tooling project.
+description: Use when mining, discovering, iterating, batch-testing, comparing, combining, transferring, or implementing quantitative factors and factor strategies in the analyze repository. The skill maintains a source-backed synthesis of 因子投资方法与实践 and focuses on producing an actual factor strategy—factor inputs, combination, entry, holding, replacement, exit, sizing, costs, and sample-out-of-sample evaluation—without turning research into an infrastructure, permission, audit, registry, or tooling project.
 ---
 
 # Mining Factors
@@ -13,7 +13,7 @@ Write one sentence before acting:
 
 `Build and evaluate <strategy> in <market/universe>, using information known at <signal time>, trading at <execution time>, and holding for <horizon>.`
 
-Read the current user decision, applicable `AGENTS.md`, frozen PLAN, and [references/research-lessons.md](references/research-lessons.md).
+Read the current user decision, applicable `AGENTS.md`, frozen PLAN, [references/book-chapter-summaries.md](references/book-chapter-summaries.md), and [references/research-lessons.md](references/research-lessons.md).
 
 When the local Brain is available, read the original book `因子投资方法与实践` before its notes or summaries. For factor mining, the minimum original-book route is:
 
@@ -24,6 +24,16 @@ When the local Brain is available, read the original book `因子投资方法与
 Then read related failure records, the live strategy, `sanity`, relevant Brain notes, and available OpenMemory `investment-learning` records. The book supplies the research method; the repository and retained evidence supply the current market, data, execution, and failure constraints.
 
 The current contract controls the research budget, candidate types, models, time split, costs, and stopping rule. This skill must not invent caps, rounds, gates, a Goal, or a simpler substitute task.
+
+## Improve the chapter synthesis when reading the source
+
+Every time original book text is read for a factor task, compare it with the matching section in [references/book-chapter-summaries.md](references/book-chapter-summaries.md).
+
+Update that section in place before finishing only when the original text adds or corrects a decision-relevant point about factor definition, testing, combination, portfolio construction, execution, or interpretation. Cite the original section or chunk range, merge duplicates, and delete superseded wording. Keep the fixed seven-chapter structure.
+
+Do not add a reading log, timestamp, agent note, changelog, or one file per reading. Do not promote a local backtest or memory into a claim about the book; put reusable local failures in [references/research-lessons.md](references/research-lessons.md). No change is the correct result when the source adds nothing material.
+
+After a material edit, validate the skill. If the task is already authorized to update the source repository, apply the same edit there and regenerate its installers. Otherwise report the local correction without silently publishing it.
 
 ## Keep the research objects distinct
 
