@@ -54,6 +54,14 @@ Delegates bounded coding and PR implementation to DeepSeek Harness models such a
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/dsh-worker-review/ai-install.md and follow the instructions inside.
 ```
 
+### delegate-luna-worker
+
+Installs or repairs the Luna Worker Agent and delegates clearly bounded work to GPT-5.6 Luna with maximum reasoning effort.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/delegate-luna-worker/ai-install.md and follow the instructions inside.
+```
+
 ### write-skill
 
 Skill architect that helps you create new Claude Code skills conforming to Anthropic's spec. Extracts requirements through minimal interaction and outputs compliant SKILL.md files.
@@ -101,6 +109,7 @@ Fetch the following URLs one by one and follow the instructions inside each:
 7. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mainline-drift-audit/ai-install.md
 8. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sandbox-dev-environment/ai-install.md
 9. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/dsh-worker-review/ai-install.md
+10. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/delegate-luna-worker/ai-install.md
 ```
 
 ## npm (opencode-coder only)
