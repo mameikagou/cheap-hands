@@ -50,14 +50,26 @@ to exist:
 printf 'mode=%s can_openmemory=%s\n' "$BOTMUX_EXECUTION_MODE" "$BOTMUX_CAN_OPENMEMORY"
 ```
 
-When `BOTMUX_EXECUTION_MODE=native`, this is the computer owner's native WSL
-session, not a guest sandbox. It may use the normal host workspace and may read
-`/home/admin/mrlonely-code/brain`. When `BOTMUX_CAN_OPENMEMORY=1`, OpenMemory is
-also allowed through the preconfigured `openmemory` MCP server or the
-`route-openmemory` skill. Never search for or print the underlying OpenMemory
-API key; BotMux supplies a session-scoped gate capability. Native mode does not
-grant permission to copy owner material into a guest Pod or another user's
-session.
+When `BOTMUX_EXECUTION_MODE=native`, the CLI process runs directly in WSL rather
+than in a Podman container. Native execution is not, by itself, owner-memory
+authority:
+
+- `BOTMUX_CAN_OPENMEMORY=1` is the computer owner's full native posture. It may
+  use the normal host workspace and read `/home/admin/mrlonely-code/brain`.
+  OpenMemory is available through the preconfigured `openmemory` MCP server or
+  the `route-openmemory` skill. Never search for or print the underlying key;
+  BotMux supplies a session-scoped gate capability.
+- `BOTMUX_CAN_OPENMEMORY=0` is restricted native WSL. It works in the selected
+  project without Podman, but BotMux gives it an identity-scoped CLI home and a
+  deny-by-default filesystem boundary. It must not read Brain, OpenMemory,
+  another project, the owner's `~/.codex`/`~/.claude`, or arbitrary sibling
+  files under the host home. Use only the current working directory and the
+  explicitly mounted skill/runtime paths. It never inherits the owner's
+  on-disk CLI authentication; a bot-level service credential may still be
+  injected by the trusted BotMux configuration for that fixed harness.
+
+Neither native posture grants permission to copy owner material into a guest
+Pod or another user's session.
 
 The remaining container paths and restrictions in this skill apply when
 `BOTMUX_EXECUTION_MODE=podman` (or when the mode marker is absent and the fixed

@@ -15,8 +15,8 @@ mkdir -p "$SKILL_DIR/agents"
 mkdir -p "$SKILL_DIR/scripts"
 
 # Download files
-curl -fsSL "$REPO_BASE/agents/openai.yaml" -o "$SKILL_DIR/agents/openai.yaml"
 curl -fsSL "$REPO_BASE/SKILL.md" -o "$SKILL_DIR/SKILL.md"
+curl -fsSL "$REPO_BASE/agents/openai.yaml" -o "$SKILL_DIR/agents/openai.yaml"
 curl -fsSL "$REPO_BASE/scripts/scan_repo.py" -o "$SKILL_DIR/scripts/scan_repo.py"
 
 # Verify

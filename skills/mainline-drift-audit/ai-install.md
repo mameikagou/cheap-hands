@@ -16,8 +16,8 @@
 
 This installation will:
 - CREATE directory: `$HOME/.claude/skills/mainline-drift-audit/`
-- CREATE file: `$HOME/.claude/skills/mainline-drift-audit/agents/openai.yaml`
 - CREATE file: `$HOME/.claude/skills/mainline-drift-audit/SKILL.md`
+- CREATE file: `$HOME/.claude/skills/mainline-drift-audit/agents/openai.yaml`
 - CREATE file: `$HOME/.claude/skills/mainline-drift-audit/scripts/scan_repo.py`
 - MODIFY: Nothing. No existing files will be changed.
 
