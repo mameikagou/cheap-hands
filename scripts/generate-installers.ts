@@ -74,7 +74,9 @@ function collectFiles(dir: string, base: string = ""): string[] {
       results.push(relPath);
     }
   }
-  return results;
+  // Filesystem enumeration order differs across macOS, Linux, and checkout
+  // history. Keep generated installers byte-for-byte stable in every runner.
+  return results.sort();
 }
 
 /** 判定 skill 复杂度 */
@@ -292,7 +294,8 @@ echo "  To uninstall: rm -rf $SKILL_DIR"
 function main(): void {
   const skillDirs = readdirSync(SKILLS_DIR, { withFileTypes: true })
     .filter((e) => e.isDirectory())
-    .map((e) => e.name);
+    .map((e) => e.name)
+    .sort();
 
   let outOfSync = false;
 
