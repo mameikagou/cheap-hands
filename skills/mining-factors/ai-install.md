@@ -18,7 +18,6 @@ This installation will:
 - CREATE directory: `$HOME/.claude/skills/mining-factors/`
 - CREATE file: `$HOME/.claude/skills/mining-factors/SKILL.md`
 - CREATE file: `$HOME/.claude/skills/mining-factors/agents/openai.yaml`
-- CREATE file: `$HOME/.claude/skills/mining-factors/references/analyze-workflow.md`
 - CREATE file: `$HOME/.claude/skills/mining-factors/references/research-lessons.md`
 - MODIFY: Nothing. No existing files will be changed.
 
@@ -55,7 +54,7 @@ Read `$HOME/.claude/skills/mining-factors/SKILL.md` and confirm:
 Tell the user:
 "mining-factors installed successfully!
 - Location: ~/.claude/skills/mining-factors/
-- Trigger: Use when mining, discovering, iterating, batch-testing, comparing, combining, transferring, or promoting quantitative fa
+- Trigger: Use when mining, discovering, iterating, batch-testing, comparing, combining, transferring, or implementing quantitative
 - To uninstall: delete the ~/.claude/skills/mining-factors/ directory"
 
 ## Rollback

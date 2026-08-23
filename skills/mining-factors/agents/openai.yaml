@@ -1,4 +1,4 @@
 interface:
   display_name: "因子挖掘"
-  short_description: "按冻结合同和唯一主线挖掘、组合并验证量化因子"
-  default_prompt: "Use $mining-factors to run factor research under the current frozen contract and protected-sample rules."
+  short_description: "直接挖掘因子并实现包含交易规则和样本外验证的完整策略"
+  default_prompt: "Use $mining-factors to build and evaluate the complete factor strategy without turning the work into an infrastructure project."

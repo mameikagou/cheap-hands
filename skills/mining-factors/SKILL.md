@@ -1,170 +1,174 @@
 ---
 name: mining-factors
-description: Use when mining, discovering, iterating, batch-testing, comparing, combining, transferring, or promoting quantitative factors in the analyze repository. It keeps the user-approved research contract and repository mainline authoritative, protects truly unseen evaluation data with machine-enforced access controls, separates predictive information from portfolio and execution failures, and evaluates weak factors as combination inputs without inventing fixed budgets or parallel infrastructure.
+description: Use when mining, discovering, iterating, batch-testing, comparing, combining, transferring, or implementing quantitative factors and factor strategies in the analyze repository. The skill focuses on producing an actual factor strategy—factor inputs, combination, entry, holding, replacement, exit, sizing, costs, and sample-out-of-sample evaluation—without turning research into an infrastructure, permission, audit, registry, or tooling project.
 ---
 
 # Mining Factors
 
-Run factor research that answers the user's actual question and stays on the repository's official data, research, backtest, registry, and product paths.
+Produce the factor strategy the user asked for. The deliverable is the strategy definition, implementation, backtest, and evidence—not a new research-management system.
 
-## Start from the current contract
+## Fix the strategy question first
 
-Before designing a formula or running data, write one sentence stating:
+Write one sentence before acting:
 
-`The requested result is <deliverable>, produced through <official path>, for <market/universe/horizon>.`
+`Build and evaluate <strategy> in <market/universe>, using information known at <signal time>, trading at <execution time>, and holding for <horizon>.`
 
-Then read, in this order:
+Read the current user decision, applicable `AGENTS.md`, frozen PLAN, and [references/research-lessons.md](references/research-lessons.md).
 
-1. The current user instruction and latest frozen decision.
-2. Applicable `AGENTS.md` files.
-3. The current PLAN, ROAD, campaign contract, stopping condition, failure ledger, and existing results.
-4. The repository's local-data skill and inventory contract.
-5. The `sanity` skill, relevant Brain notes, and available OpenMemory records.
+When the local Brain is available, read the original book `因子投资方法与实践` before its notes or summaries. For factor mining, the minimum original-book route is:
 
-Use [references/research-lessons.md](references/research-lessons.md) when designing a campaign, combination, cross-market transfer, or promotion decision. Use [references/analyze-workflow.md](references/analyze-workflow.md) before running repository commands.
+- chapter 2: portfolio sorting, multiple sorting, regression, incremental information, anomaly tests, and model comparison;
+- chapter 6: p-hacking, multiple testing, economic explanations, costs, and sample-out-of-sample deterioration;
+- chapter 7: return predictors, the six predictor criteria, return prediction, portfolio construction, constraints, cost models, factor combination, and the difficulty of factor timing.
 
-The frozen user contract overrides this skill. Do not create a Goal, change a budget, shrink a candidate family, prohibit an approved model, add a stopping rule, or open a protected sample unless the user or frozen contract authorizes it. If live code or a plan conflicts with the frozen contract, report `CONTRACT_CONFLICT` with the exact difference before continuing.
+Then read related failure records, the live strategy, `sanity`, relevant Brain notes, and available OpenMemory `investment-learning` records. The book supplies the research method; the repository and retained evidence supply the current market, data, execution, and failure constraints.
 
-## Name the research layer
+The current contract controls the research budget, candidate types, models, time split, costs, and stopping rule. This skill must not invent caps, rounds, gates, a Goal, or a simpler substitute task.
 
-Classify the task before choosing metrics:
+## Keep the research objects distinct
 
-- `PREDICTOR`: Does a variable rank assets, identify a market state, time a factor, or predict an exit risk?
-- `COMBINATION`: Does adding several predictors improve a frozen baseline or joint model?
-- `PORTFOLIO`: Can a frozen score become target holdings under the strategy rules?
-- `EXECUTION`: Can the approved engine trade those targets with real prices, constraints, and costs?
-- `SYSTEM`: Does the implementation preserve one data path, registry, engine route, and product surface?
+Use the book's distinctions instead of calling every column an “alpha factor”:
 
-Do not move a conclusion between layers. A high-turnover portfolio can fail while its inputs retain weak ranking information. A negative fixed formula does not reject every family represented in that formula. An engineering or data failure is not a scientific result.
+- A **return predictor** is a variable observed at the signal time and used to predict later asset returns.
+- A **factor or anomaly portfolio** is a tradable portfolio formed from one or more predictors; its return is not the same object as the predictor value.
+- A **return model** combines predictors into expected returns or scores.
+- A **risk model** estimates the covariance and exposures used to control portfolio risk.
+- A **trading strategy** turns the return model into positions through entry, holding, replacement, exit, sizing, and costs.
 
-## Freeze the research question
+Test the object the user asked about. Predictor evidence, factor-portfolio evidence, combined-model evidence, and full-strategy evidence are related but not interchangeable.
 
-Record the market, point-in-time universe, signal time, fields available at that time, earliest executable price, prediction target, holding period, primary metric, development and protected periods, costs, candidate/model budget, combination permission, and stopping rule.
+## Define the complete strategy
 
-Distinguish the signal's purpose:
+Freeze the parts that determine what is bought or sold:
 
-- Cross-sectional selection compares assets at the same time.
-- Market timing decides whether total exposure should rise, fall, or stay in cash.
-- Factor timing changes how much weight a style or factor family receives.
-- Exit or tail-risk signals aim to avoid a specified realizable loss.
+- market and point-in-time tradable universe;
+- signal fields and the time each field becomes known;
+- prediction target and holding period;
+- factor direction and normalization;
+- factor combination or model;
+- entry rule;
+- continuing-hold rule;
+- replacement rule;
+- exit or cash rule;
+- position count, weight or sizing rule;
+- signal time, order time, executable price, rebalance frequency;
+- fees, spread, slippage, impact, funding or borrow cost, taxes, minimum commission, and lot or quantity rules;
+- development period and sample-out-of-sample period.
 
-Use a metric that can observe the declared purpose. A market-wide state can be identical for every asset and still be useful for timing; lack of cross-sectional rank correlation does not reject it.
+If one of these is absent, complete the strategy from the frozen PLAN or live strategy before inventing new research machinery.
 
-## Use only the official local data path
+## Match factors to their actual job
 
-Query the inventory interface for the exact scope, fields, universe, symbols, and dates. Validate a structured `data_requirement` before saving or running a factor.
+Classify each input by what it predicts:
 
-If a required field, time range, symbol, point-in-time mapping, or executable price is missing:
+- Cross-sectional selection ranks assets at the same time.
+- Market timing decides whether the strategy should hold risk or cash.
+- Factor timing changes the weight of a factor family.
+- Exit or tail-risk signals decide whether a realizable loss should be avoided.
 
-- return `DATA_BLOCKED` with the exact gap;
-- do not substitute a similar field, current membership, revised snapshot, or another price;
-- do not fetch data inside factor evaluation;
-- add data only through raw to canonical or mart to inventory when the task authorizes ingestion.
+Use a matching target and metric. Do not reject a market-wide signal because it has no cross-sectional RankIC. Do not claim an exit signal failed merely because it did not improve entry ranking.
 
-Missing next-open data means no fill. A held but unsellable asset remains held and continues to consume cash, capacity, and risk limits.
+Keep four conclusions separate:
 
-## Protect unseen periods with machine enforcement
+1. whether an input contains predictive information;
+2. whether inputs improve each other when combined;
+3. whether the complete holding and replacement strategy works after costs;
+4. whether a formal engine can execute it under real constraints.
 
-Text saying “do not look” is not a seal. Before claiming validation or final data is unseen, require all of these:
+A high-turnover strategy can fail while its weak inputs remain useful. A fixed formula can fail without rejecting every factor family it contains.
 
-1. The development process receives only development data through a restricted database view, dataset root, service role, or equivalent access boundary. Its credentials cannot read protected rows or protected metrics.
-2. Status, logs, APIs, dashboards, artifacts, and error messages exclude protected dates, rankings, directions, curves, and aggregate metrics before the authorized reveal.
-3. A test executed with the same identity as the mining process proves protected reads fail. A convention, hidden filename, prompt instruction, or untested permission is insufficient.
-4. PostgreSQL records the development, validation, and final intervals; reveal counts; data and code hashes; and the complete candidate set.
-5. Before a reveal, atomically freeze the candidate IDs, directions, transforms, model or weights, universe, labels, costs, execution rules, code hash, data snapshot, and evaluation procedure.
-6. The authorized reveal is an atomic state transition. Validation or final results cannot be overwritten, re-hidden, or consumed twice.
+## Mine real information, not formula count
 
-If any person or process saw protected evidence before the freeze, mark that interval `CONTAMINATED`. It may remain retrospective evidence, but it cannot be relabeled as truly unseen. Create a successor only when a genuinely later untouched period exists; a new campaign ID does not create new sample-out-of-sample evidence.
+Use the budget frozen by the user. Search genuinely different economic mechanisms, data sources, state definitions, residual information, event orderings, interactions, and models. Do not spend the campaign mainly changing adjacent windows, thresholds, weights, or names.
 
-Do not open validation or final merely because development code runs. Follow the current campaign's frozen readiness and reveal contract.
+For each candidate, record its economic mechanism, fields, formula, expected direction, horizon, applicable state, and what would disprove it. Count separately:
 
-## Mine broadly without manufacturing breadth
+- formulas tested;
+- distinct economic mechanisms;
+- effective independent information dimensions.
 
-Use the user-approved candidate, round, model, and time budget. This skill sets no default cap.
+Several statistics computed from the same assets, dates, and future-return label are different views of the same evidence, not independent confirmations.
 
-For every candidate, record its parent hypothesis, economic mechanism, required fields, transformation, expected direction, horizon, applicable state, and falsification condition. Save every attempted candidate and failure in the official registry before reading its result.
+Use the book's six criteria as a diagnosis and promotion checklist, not as an automatic standalone-profit gate:
 
-Count three different things:
+- logic: identify a risk-compensation, mispricing, information-flow, or market-mechanism reason;
+- persistence: check whether the relationship survives time rather than one fitted interval;
+- incremental information: control existing predictors through conditional sorting, regression, or another matching test;
+- robustness: vary sensible parameters, algorithms, and subperiods without changing the hypothesis;
+- investability: match information decay to holding time and measure turnover, liquidity, and complete costs;
+- pervasiveness: test other assets or markets only when the mechanism and data meaning transfer.
 
-1. nominal formulas;
-2. distinct economic mechanisms;
-3. effective independent information dimensions.
+A weak legal input may remain useful in a joint model even when it is not a profitable standalone strategy. The six criteria describe the quality and limitations of evidence; they do not authorize silently changing the user's union-of-inputs question into a survivor contest.
 
-Adjacent windows, renamed formulas, similar transforms, overlapping holdings, or signals that fail in the same periods do not automatically provide independent evidence. Similarity describes and controls the pool; it does not justify early deletion unless equivalent ranking, coverage, trading meaning, and lack of conditional increment are demonstrated.
+## Keep legal weak factors for the joint strategy
 
-Use small-window dry runs before full evaluation to test expression parsing, point-in-time alignment, sparse starts, empty outputs, cross-year partitions, terminal calendar boundaries, resource peaks, and schema consistency. Classify a dry-run failure as engineering evidence.
+Unless the user contract says otherwise, do not require every input to make money alone, cover all fees alone, pass every year, or beat the incumbent before combination.
 
-## Treat weak predictors as combination inputs
+Remove an input only when it uses future data, cannot be reproduced, produces no usable variation, has a broken mapping, uses an impossible trade, or is proven to be the same information as another input. Otherwise keep weak but legal inputs available to the combined strategy.
 
-Unless the frozen contract says otherwise, do not require each input to be a profitable standalone strategy, cover all costs alone, pass every year, or beat the incumbent before combination.
+For the first joint baseline:
 
-Remove or block an input only for a demonstrated fatal problem such as future data, an impossible trade, a constant or irreproducible output, a broken mapping, or proven duplicate information. Otherwise retain weak but legal inputs as `KEEP_WEAK_SEED`, `COMPONENT_ONLY`, `POSSIBLE_REDUNDANCY`, or `INSUFFICIENT_EVIDENCE` as supported by the evidence.
+1. put every legal input on a comparable scale at each signal time;
+2. combine close variants inside the same economic family;
+3. combine families so a family does not gain weight merely because it has more formulas;
+4. retain a simple equal-weight or score baseline;
+5. run the regularized linear, nonlinear, interaction, or machine-learning combinations allowed by the frozen contract.
 
-Start with an interpretable joint baseline appropriate to the contract. A useful default is robust scaling or ranking within each time point, combination within economic families, then combination across families so the family with the most formulas does not receive more weight by accident. Keep a simple baseline as a measuring stick. If the contract permits regularized linear models, nonlinear models, interactions, or machine learning, evaluate them rather than silently prohibiting them.
+If the user's question is “what happens when all legal factors are combined,” run that union directly. Do not replace it with a contest in which each weak factor or weak-factor subset must defeat the original strategy first.
 
-Do not count RankIC, quantile spread, top-N return, and win rate from the same labels, assets, and dates as independent confirmations. Report their shared evidence base.
+## Turn the factor score into a trading strategy
 
-## Separate relative selection from the decision to trade
+A cross-sectional rank answers which asset looks better than the others. It does not answer whether any asset is expected to rise enough to buy. A top percentile always exists, so it cannot by itself be an absolute entry rule or a cash switch.
 
-A cross-sectional rank answers “which asset looks better than the others.” It does not answer “is any asset expected to make enough money to buy.” A top percentile always exists when the cross-section is large enough, so it cannot by itself implement an absolute entry gate or permission to hold cash.
+Use the combined score to rank candidates. When the strategy permits cash, separately estimate expected forward absolute return for opening or exiting. For replacement, estimate the new holding's expected improvement over the current holding.
 
-When the strategy must choose between cash, holding, exiting, and replacing:
+Trade only when the expected improvement over the same horizon is greater than the complete incremental cost and the frozen safety margin. Otherwise keep the current holding or cash. Ranking buffers, minimum holding time, smoothing, and a maximum number of replacements may reduce turnover, but they do not replace this comparison.
 
-- calibrate an expected forward absolute return for cash entry and exit decisions;
-- calibrate expected forward relative improvement for replacement decisions;
-- use only information available at the decision time;
-- compare prediction and full incremental cost in the same unit and over the same horizon;
-- include fees, spread, slippage, impact, funding or borrow cost, taxes, minimum commissions, lot or quantity rules, and the frozen safety margin.
+Write the position state transition explicitly:
 
-If the expected improvement is less than or equal to the complete incremental cost plus safety margin, the decision is `HOLD` and the order count must be zero. Ranking buffers, minimum holding periods, smoothing, and replacement limits can reduce churn but cannot replace this net-benefit test.
+```text
+cash -> open
+holding -> continue holding
+holding -> replace
+holding -> exit to cash
+blocked or missing executable price -> no new trade
+```
 
-If the data cannot support a defensible absolute-return or cost estimate, do not invent a numeric gate. Keep the work at the predictor or research layer, mark the trading claim `INSUFFICIENT_EVIDENCE`, and fail closed for formal trading.
+`HOLD`, insufficient expected improvement, and blocked execution must produce zero orders. Unchanged membership must not trigger hidden equal-weight restoration. Use the approved engine's orders and holdings to verify the strategy implementation; do not build another account or return calculation.
 
-## Reconcile decisions to engine orders
+## Make sample-out-of-sample part of the strategy
 
-The strategy layer emits public signals or `target_weights`; the approved engine owns orders, fills, cash, positions, fees, valuation, and profit and loss.
+The development and sample-out-of-sample periods belong in the strategy definition alongside the formula, weights, holding rule, and costs.
 
-Reconcile every strategy decision to the engine's authoritative output. `HOLD`, `HOLD_COST`, and `BLOCKED` must produce zero orders. Unchanged membership must not trigger hidden equal-weight restoration. A small number of approved replacements combined with high order count or turnover is an implementation failure, not a strategy result.
+- Use development data to choose factors, directions, transforms, models, thresholds, holding rules, and cost gates.
+- Before sample-out-of-sample evaluation, freeze the complete strategy: factor set, combination, entry, hold, replacement, exit, sizing, costs, universe, and dates.
+- Run the frozen complete strategy once on the sample-out-of-sample period.
+- Do not use that result to tune the same strategy and still call the same period sample-out-of-sample.
+- If the period was already examined, label it retrospective validation; genuinely new evidence begins with later data not used to design the strategy.
 
-Use the engine route declared by the current repository rules. In `analyze`, this normally means Qlib for A-share research and formal portfolio results, VectorBT Pro for crypto research portfolios, and NautilusTrader for approved formal crypto or U.S. execution. Never introduce community `vectorbt`, a handwritten account, a shadow fee or funding ledger, or another return curve.
+Do not build database roles, permission services, separate data roots, reveal APIs, access-denied tests, or “mechanical seal” infrastructure for this skill. Use the repository's existing time split and research runner. Sample-out-of-sample discipline is a strategy and research rule unless the user explicitly asks for infrastructure enforcement.
 
-Run expensive portfolio and formal-engine stages only after the prerequisites frozen in the current campaign contract pass. Cheap predictor diagnostics may proceed when their own data and timing gates pass; lack of later formal market detail should not block correctly labelled exploratory research unless the contract requires it.
+## Implement through the existing research path
 
-## Preserve one mainline and one source of truth
+Use the local inventory to verify the fields and point-in-time coverage, then implement the factor and complete strategy through the repository's current factor, model, target-weight, and approved backtest paths.
 
-Reuse the existing CLI, data lake, PostgreSQL registry, factor catalog, model path, target-weight contract, approved engines, artifact root, API, and frontend. Do not create a campaign-specific CLI, database, config tree, report system, artifact root, production module, account, or test tree.
+Do not create a new CLI, database, registry, backtester, account, artifact tree, production package, or audit framework. If an actual bug prevents the requested strategy from running correctly, make the smallest repair on the existing path, rerun the strategy, and return to research. Do not turn cleanup, hashes, schemas, permissions, or architecture review into the deliverable.
 
-Store machine state, candidates, metrics, failures, reveal counts, hashes, and relationships in PostgreSQL. Store large panels and time series once in the data lake or approved Parquet area and register their lifecycle. Write prose only for a named human reader. Do not make a dashboard reconstruct state by scanning directories.
+Use Qlib, VectorBT Pro, or NautilusTrader only as assigned by the current repository rules. The strategy code calculates factors, predictions, trade decisions, and target holdings; the approved engine calculates orders, fills, holdings, cash, fees, and returns.
 
-When a new path replaces an old one, remove the old active code, entrypoint, config, test, and catalog route in the same change. Preserve planning, failures, research conclusions, and human decision history as evidence; mark obsolete instructions retired instead of deleting history.
+## Run and diagnose the complete result
 
-## Classify results at the narrowest valid level
+At minimum, report:
 
-Use separate states for:
+1. the factors and economic families used;
+2. the exact combination or model;
+3. what is bought or sold, when, and for how long;
+4. the entry, hold, replacement, exit, and sizing rules;
+5. the development and sample-out-of-sample dates;
+6. gross return, every material cost, net return, drawdown, turnover, and holding duration;
+7. how often the strategy stayed in cash, held, replaced, or exited;
+8. factor information, combination improvement, and complete-strategy performance as separate conclusions;
+9. whether the result depends on one period, asset, or near-duplicate family;
+10. the next strategy change supported by the evidence, or the narrow reason to stop.
 
-- `ENGINEERING_FAILED`
-- `DATA_BLOCKED`
-- `EVALUATION_MISMATCH`
-- `INCONCLUSIVE`
-- `FORMULA_NEGATIVE`
-- `COMBINATION_NEGATIVE`
-- `EXECUTION_NEGATIVE`
-- `CONTAMINATED`
-- `VALIDATED`
-
-State exactly which formula, mechanism, combination, trading rule, market, horizon, and period the result covers. Do not turn one fixed formula, one batch, or one trading shell into a family-level rejection. Before stopping a campaign, compare the executed breadth and depth with the frozen contract, report untested mechanisms and retained weak seeds, and verify that the contract's stopping condition is actually satisfied.
-
-## Report the outcome
-
-Lead with the answer to the user's question, then report:
-
-1. frozen scope, primary target, and official path;
-2. data readiness and point-in-time gaps;
-3. attempted formulas, mechanisms, and effective dimensions;
-4. predictor, combination, portfolio, and execution evidence separately;
-5. protected-sample state and reveal count;
-6. full costs, rejected trades, order reconciliation, and engine provenance when a portfolio ran;
-7. exact failure scope, remaining evidence, registry identity, and reproducibility hashes;
-8. whether product/API/UI synchronization is required and complete.
-
-Use plain Chinese. Explain what was measured, what would be bought or sold, and over what holding period. Do not use a passing test, generated artifact, or visible page as proof that the research question was answered.
+Lead with the actual strategy result. Use plain Chinese and concrete trading behavior. Mention engineering only when a real defect changed or blocked the result.

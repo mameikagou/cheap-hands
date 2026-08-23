@@ -17,7 +17,6 @@ mkdir -p "$SKILL_DIR/references"
 # Download files
 curl -fsSL "$REPO_BASE/SKILL.md" -o "$SKILL_DIR/SKILL.md"
 curl -fsSL "$REPO_BASE/agents/openai.yaml" -o "$SKILL_DIR/agents/openai.yaml"
-curl -fsSL "$REPO_BASE/references/analyze-workflow.md" -o "$SKILL_DIR/references/analyze-workflow.md"
 curl -fsSL "$REPO_BASE/references/research-lessons.md" -o "$SKILL_DIR/references/research-lessons.md"
 
 # Verify

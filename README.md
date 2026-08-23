@@ -24,7 +24,7 @@ Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanit
 
 ### mining-factors
 
-Mines and combines quantitative factors under the current frozen research contract, with machine-enforced unseen-sample protection, correct weak-factor evaluation, pre-trade cost gates, and the repository's official data, registry, and engine paths.
+Mines factors and implements the complete trading strategy: factor combination, entry, holding, replacement, exit, sizing, costs, and sample-out-of-sample evaluation. It keeps engineering work subordinate to the strategy result.
 
 ```
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mining-factors/ai-install.md and follow the instructions inside.

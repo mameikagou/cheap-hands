@@ -7,10 +7,10 @@ Read this file before designing a factor campaign, factor combination, cross-mar
 Use, in order:
 
 1. Current user instruction and frozen PLAN or campaign contract.
-2. Live code, inventory, PostgreSQL state, and approved-engine output.
-3. `.planning/quant-qlib/failures/` and related reports.
-4. Brain books, papers, and local research notes.
-5. OpenMemory `investment-learning` records when the capability is available.
+2. The original `因子投资方法与实践` book sections relevant to the research object.
+3. Live strategy code, point-in-time data, and approved-engine output.
+4. `.planning/quant-qlib/failures/` and related reports.
+5. Brain notes, papers, and OpenMemory `investment-learning` records.
 
 Do not claim that OpenMemory was checked when its query fails. Do not replace it with an unrelated local store.
 
@@ -56,7 +56,7 @@ Correction: validate official field meaning and available-at time before formula
 
 Several A-share combinations looked strongly positive in development and all failed the once-opened later period. Repeated access to a historical period makes it known evidence even if a new campaign ID or later time split is created.
 
-Correction: protect validation and final data with process credentials and data boundaries, not prompt text. Freeze the complete candidate and execution manifest before an atomic reveal. If the protected sample was seen early, mark it contaminated and wait for genuinely later untouched data before claiming new sample-out-of-sample evidence.
+Correction: make the development and sample-out-of-sample dates part of the strategy contract. Freeze the complete factor combination and trading strategy before evaluating the later period. If that period was already examined, call it retrospective evidence and use genuinely later untouched data for the next sample-out-of-sample claim. Do not turn this rule into a permission or database-infrastructure project.
 
 ### Relative ranking was used as an absolute entry gate
 
@@ -80,7 +80,7 @@ Correction: reconcile decisions to authoritative engine orders. `HOLD`, `HOLD_CO
 
 Some investigations focused on hashes, audit surfaces, one-off modules, reports, or extra safety layers while the requested research result remained unanswered. One-off U.S. experiments also entered long-lived source despite an existing campaign runner.
 
-Correction: retain only correctness boundaries that can change the truth of the answer. Reuse the official runner, registry, engines, API, and frontend. Do not create a new infrastructure surface for one research round.
+Correction: the deliverable is the implemented factor strategy and its result. Retain only the smallest correctness checks and repairs needed to run that strategy. Reuse the official runner and engines; do not create a new infrastructure surface, mechanical sample seal, audit framework, or registry project for one research round.
 
 ## Useful retained sources
 
@@ -89,6 +89,8 @@ Correction: retain only correctness boundaries that can change the truth of the 
 - Brain `因子/因子研究.md`.
 - Brain `AI投研/Looping 因子挖掘：验证器捕获与真实 Alpha 边界.md`.
 - Brain `币圈/Binance USD-M 4H订单流与杠杆因子研究方法及失败归因-2026-08-21.md`.
-- Brain `投资书籍/因子投资方法与实践/读书笔记-第6章-因子研究现状.md` and the original-book chunks it cites.
+- Brain original book `投资书籍/因子投资方法与实践/chunks/`: chapter 2 sections in chunks 003–007, chapter 6 sections in chunks 023–029, and chapter 7 sections in chunks 030–037. Read these before the derived chapter notes.
+- Brain `投资书籍/因子投资方法与实践/读书笔记-第6章-因子研究现状.md` as a derived local summary, not as a substitute for the original chapter.
+- OpenMemory `investment-learning` memory `3254e9a0-960e-49dc-9766-f6e831db9041`: predictor evidence, combination evidence, and costed trading-policy evidence are three separate layers. Its metadata was verified as `canonical_project=investment-learning`.
 
 These records are evidence and corrections, not a new universal contract. Resolve apparent conflict by returning to the current frozen contract, the live code path, and the original methodological source.
