@@ -22,6 +22,14 @@ Reviews quantitative research ideas and systems against the frozen business cont
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanity/ai-install.md and follow the instructions inside.
 ```
 
+### mining-factors
+
+Mines and combines quantitative factors under the current frozen research contract, with machine-enforced unseen-sample protection, correct weak-factor evaluation, pre-trade cost gates, and the repository's official data, registry, and engine paths.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mining-factors/ai-install.md and follow the instructions inside.
+```
+
 ### mainline-drift-audit
 
 Audits plans and implementations for parallel systems, duplicated truth, directory-scanned state, unbounded artifacts, and database or data-lake bypasses.
@@ -110,6 +118,7 @@ Fetch the following URLs one by one and follow the instructions inside each:
 8. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sandbox-dev-environment/ai-install.md
 9. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/dsh-worker-review/ai-install.md
 10. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/delegate-luna-worker/ai-install.md
+11. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mining-factors/ai-install.md
 ```
 
 ## npm (opencode-coder only)
