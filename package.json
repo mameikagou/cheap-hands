@@ -14,6 +14,7 @@
     "typecheck": "bun run --filter '*' typecheck",
     "generate": "bun scripts/generate-installers.ts",
     "generate:check": "bun scripts/generate-installers.ts --check",
+    "link:skills": "bun scripts/link-skills.ts",
     "install:all": "bun run --filter 'skills/*' install:skill"
   }
 }
