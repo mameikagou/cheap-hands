@@ -1,11 +1,20 @@
 ---
 name: mainline-drift-audit
-description: Audit technical proposals and repository implementations for mainline drift, parallel systems, adopt-before-build and dependency reuse, repeated wheel-building, one-off research infrastructure, duplicate CLIs/configs/tests/reports, fake formal results, data-lake bypasses, incorrect paths, protected planning evidence, and unbounded artifacts. Use before approving a plan or architecture migration, after implementation, during cleanup, before research campaigns or backtest changes, or whenever the user asks whether a proposal or codebase is “走主线”, “反复拉屎”, “自造轮子”, “屎山”, or accumulating unexplained disk usage.
+description: Audit technical proposals and repository implementations for mainline drift, parallel systems, adopt-before-build and dependency reuse, repeated wheel-building, one-off research infrastructure, duplicate CLIs/configs/tests/reports, fake formal results, data-lake bypasses, incorrect paths, protected planning evidence, and unbounded artifacts. Audit against the repository's own frozen AGENTS.md responsibility map when one exists. Use before approving a plan or architecture migration, after implementation, during cleanup, before research campaigns or backtest changes, or whenever the user asks whether a proposal or codebase is “走主线”, “反复拉屎”, “自造轮子”, “屎山”, or accumulating unexplained disk usage.
 ---
 
 # Mainline Drift Audit
 
 Perform an evidence-based, read-only audit by default. Do not fix, delete, move, commit, or generate an audit document unless the user explicitly asks.
+
+## Current repository contracts (quant workspace)
+
+When auditing repositories under `mrlonely-code`, the frozen facts are:
+
+- `analyze2quant/` is the single target mainline for new quantitative-research production code (one Python distribution, one CLI/API, one research UI, one append-only PostgreSQL migration chain, required `infra/`). New engines only as thin adapters under `engines/` declared in `research.routing`; new data sources through `providers/` and `lake/`; new pages only inside the existing `web.py` + `web/`; new commands only through `commands/` into the single `cli.py`.
+- `analyze/` is a migration source and historical evidence store, not a second implementation site. Its `.planning/`, research conclusions, failure records, and human decision reports are protected evidence even though its code is superseded.
+- `analyze2quant/AGENTS.md` holds the authoritative repository responsibility map, and `tests/test_repository_map.py` fails when a managed file or directory lacks a declared owner. Treat a missing ownership entry as a P1 finding, and treat that test as the model recurrence guard: prefer ownership-map enforcement over more documentation.
+- The 2026-08-31 system audit (`analyze2quant/planning/reports/analyze主线与数据库审计-2026-08-31.md`) justified the cutover: legacy `qrant_research_prod` becomes a hashed read-only cold archive, and `analyze2quant_prod` owns the only active writer and migration chain. Any proposal that keeps both writable is reviving the blocked state.
 
 ## Audit goal
 
@@ -87,6 +96,11 @@ Check for these failure patterns:
 - Tests lock in a wrong architecture by asserting duplicate files or parallel entrypoints exist.
 - Documentation is duplicated, stale, or treated as stronger evidence than live code.
 - Cleanup code deletes planning, research conclusions, reports, canonical data, or promoted results together with rebuildable caches.
+- Artifact registry rows whose files no longer exist (or exist unregistered), while read paths silently skip missing objects instead of failing closed, so pages, runs, and artifact tables give contradictory answers.
+- UI/page snapshot tables that persist computed results as stored JSON copies instead of live projections from the single authoritative read model.
+- State-machine enums polluted with per-campaign free text, so recorded `active`/status values can no longer drive recovery.
+- A legacy service and the new mainline sharing one database with two migration owners, freezing the cutover permanently instead of retiring the old writer.
+- Backups on the same physical volume as primary data counted as disaster protection, or a runtime database role holding superuser/createdb.
 - A proposal claims a capability is missing without checking the existing implementation.
 - A proposal introduces a new package, CLI, registry, database, config root, artifact root, report schema, or engine when the existing mainline can be extended.
 - A proposal approves a new build without a capability-gap matrix covering repository code, declared dependencies, and official or mature external implementations.
@@ -365,5 +379,8 @@ Prefer enforceable guards over more documentation:
 - promotion-aware retention: rejected runs keep metrics, promoted runs keep only necessary reproducibility assets;
 - path containment checks using resolved paths before every write;
 - architecture tests that fail on new top-level packages, CLIs, catalogs, or artifact roots.
+- An ownership-map test that requires every managed file or directory to declare its owner in `AGENTS.md` before it can exist.
+- Fail-closed artifact availability: register only objects verified by path, size, schema, and hash; a lost object becomes `missing`/`quarantined` and the read model surfaces it instead of skipping it.
+- Cutover writer rule: exactly one active writer at every moment; after cutover the legacy database is a hashed read-only cold archive with application write grants revoked.
 
 Do not propose a new management framework merely to enforce these rules. Add the smallest guard to the existing mainline.
