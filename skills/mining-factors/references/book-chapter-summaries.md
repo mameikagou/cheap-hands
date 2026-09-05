@@ -111,6 +111,7 @@ This file is the skill's canonical chapter synthesis of the original book. It is
 **Summary:**
 
 - The factor zoo grows through publication incentives, flexible specifications, repeated trials, selective reporting, and multiple-hypothesis testing. A conventional significance threshold becomes weak evidence when many candidates were tried.
+- Multiple-testing correction targets three error families (section 6.1.5, chunk 023): FWER (Bonferroni/Holm, White reality check, Romano–Wolf StepM) is too strict for finance (Chordia et al. 2020); FDR — the expected share of false discoveries among rejections — is the more usable target. A factor selected from a large searched set must clear a t-value bar well above 2.0.
 - Prior plausibility matters. Economic and market knowledge determines whether surprising statistical evidence should materially change belief; a meaningless rule begins with a very low prior probability.
 - “Factor wars” often compare overlapping models and differently constructed versions of similar ideas. Winning one in-sample horse race does not establish a unique true model.
 - Risk compensation predicts returns because investors bear systematic loss in adverse states. Mispricing predicts correction of biased beliefs or constrained arbitrage. Data snooping predicts fragile results without a stable mechanism. Each explanation requires different tests.
@@ -131,6 +132,7 @@ This file is the skill's canonical chapter synthesis of the original book. It is
 
 - A return predictor is an observable variable used to predict later return. A factor portfolio is a tradable return series. A return model combines predictors; a risk model estimates common exposures and residual covariance. These layers must not be conflated.
 - A useful predictor should have a defensible reason, persistence through time, incremental information, robustness to reasonable definitions, investability after turnover and costs, and evidence beyond one narrow sample when transfer is economically valid.
+- Concrete evaluation rulers (sections 7.1.2–7.1.3, chunks 030–031): daily-horizon IC above 2% counts as an excellent predictor; supporting metrics are IR (IC mean over IC standard deviation), the share of |IC| ≥ 2% days, and the t-value of mean IC. Information decay is measured as an IC half-life (Grinold–Kahn): the lag at which IC falls to half its original value; fundamental variables decay slowly, high-frequency price-volume variables fast — decay speed sets required rebalance frequency and capacity.
 - Return prediction may use ranks, scores, regressions, or nonlinear models. A relative rank says which asset looks better, not whether any asset is expected to rise enough to buy.
 - Portfolio sorting forms groups and measures their subsequently realized returns; the realized high-minus-low spread evaluates the sort but does not give the sorting score a return unit. Parameterized return prediction is a separate method.
 - A Barra-style risk model estimates factor exposures, factor covariance, and asset-specific risk. Pure factor portfolios isolate factor exposure, while an investable portfolio also obeys holdings and trading constraints.
