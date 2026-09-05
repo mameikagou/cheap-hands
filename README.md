@@ -88,14 +88,6 @@ Packages any existing skill into a zero-friction auto-install bundle (ai-install
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/skill-auto-installer/ai-install.md and follow the instructions inside.
 ```
 
-### learn-codebase
-
-Socratic codebase tutor that uses prediction, evidence-based questioning, active recall, and a learning journal to turn unfamiliar code into understanding you can defend in review or interviews. Based on [`ktaletsk/learn-codebase`](https://github.com/ktaletsk/learn-codebase).
-
-```
-Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/learn-codebase/ai-install.md and follow the instructions inside.
-```
-
 ### code-graph
 
 Builds a local LSP code graph so Claude can efficiently read large codebases without traversing every source file. (Work in progress)
@@ -115,12 +107,11 @@ Fetch the following URLs one by one and follow the instructions inside each:
 3. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/write-skill/ai-install.md
 4. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/skill-auto-installer/ai-install.md
 5. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/code-graph/ai-install.md
-6. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/learn-codebase/ai-install.md
-7. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mainline-drift-audit/ai-install.md
-8. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sandbox-dev-environment/ai-install.md
-9. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/dsh-worker-review/ai-install.md
-10. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/delegate-luna-worker/ai-install.md
-11. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mining-factors/ai-install.md
+6. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mainline-drift-audit/ai-install.md
+7. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sandbox-dev-environment/ai-install.md
+8. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/dsh-worker-review/ai-install.md
+9. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/delegate-luna-worker/ai-install.md
+10. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mining-factors/ai-install.md
 ```
 
 ## npm (opencode-coder only)
