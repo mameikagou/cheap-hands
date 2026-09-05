@@ -80,30 +80,6 @@ Packages any existing skill into a zero-friction auto-install bundle (ai-install
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/skill-auto-installer/ai-install.md and follow the instructions inside.
 ```
 
-### factor_backtest
-
-安全、高效地批量回测 8 个 Alpha 表达式，内置验证、熔断和异常处理机制。
-
-```
-Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/factor_backtest/ai-install.md and follow the instructions inside.
-```
-
-### knowledge_base_search
-
-Search a local WorldQuant BRAIN alpha research knowledge base for dataset fields, optimization notes, example ideas, operators, and platform mechanics.
-
-```
-Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/knowledge_base_search/ai-install.md and follow the instructions inside.
-```
-
-### alpha-research-recorder
-
-Alpha 研究日志记录器：按记录类型（session_meta / round / final_summary）套用结构化模板并持久化研究日志。
-
-```
-Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/alpha-research-recorder/ai-install.md and follow the instructions inside.
-```
-
 ### quant-ui-sync
 
 Maintain the analyze2quant research frontend and result visibility whenever a factor, strategy, spec, or run is completed or materially changed: formal run registration via `research run-spec`, `api`-schema projections shared by UI and AI, and no page-model copies or file scans.
@@ -127,9 +103,7 @@ Fetch the following URLs one by one and follow the instructions inside each:
 7. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/delegate-luna-worker/ai-install.md
 8. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mining-factors/ai-install.md
 9. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanity/ai-install.md
-10. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/factor_backtest/ai-install.md
-11. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/knowledge_base_search/ai-install.md
-12. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/quant-ui-sync/ai-install.md
+10. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/quant-ui-sync/ai-install.md
 ```
 
 ## Uninstall
