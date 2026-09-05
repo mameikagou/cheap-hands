@@ -1,0 +1,4 @@
+interface:
+  display_name: "量化前端同步"
+  short_description: "analyze2quant：正式链路登记 Run/evidence 并维护同源只读投影 UI"
+  default_prompt: "Use $quant-ui-sync to register this completed factor, strategy, or backtest through the analyze2quant formal chain and verify the shared read-only UI projection."
