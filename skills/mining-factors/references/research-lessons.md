@@ -62,7 +62,37 @@ Correction: make the development and sample-out-of-sample dates part of the stra
 
 In a crypto strategy, `score above the current cross-sectional 80th percentile` was intended to mean “only hold when there is a real signal.” With a sufficiently large universe, a top 20 percent always existed, so the strategy was almost always fully invested. A cross-sectional standardized score also had no natural 0-to-100 absolute scale.
 
-Correction: use ranking only to compare assets. Cash entry and exit require a separately calibrated forward absolute-return estimate. Replacements require expected relative improvement. Both must be compared with full incremental costs over the same horizon using only information available at the decision time.
+Correction: use ranking only to compare assets. A rank-only portfolio can use frozen holding periods, rank buffers, and limited replacement to control turnover, then measure actual costed returns with the approved engine. If cash entry, direction timing, precise incremental-value comparison, or Kelly sizing requires an expected-return magnitude, that magnitude must come from a separately specified and validated model; do not infer it from a cross-sectional rank.
+
+### Relative rank was converted into a cardinal return forecast
+
+A Binance USD-M 4H model had positive Rank IC, so a strategy regressed the past realized top-minus-bottom return on the model's basket score gap. The resulting linear estimate was treated as expected 12-hour spread and used for entry, 4-hour continuation, and Kelly sizing. The regression was point-in-time, but that only prevented future-data leakage; it did not prove that distances between rank scores had stable return units. The policy blocked 98.6 percent of complete entry checks, usually exited after four hours despite a 12-hour label, and every accepted Kelly value hit its cap.
+
+Correction: preserve the model as an ordinal selector only. The future return of a portfolio formed from high and low ranks is an evaluation result, not a magnitude encoded in the rank score. Use structural turnover controls for a rank-only strategy. If the contract requires ex-ante alpha to exceed costs or requires Kelly sizing, build and validate a separate magnitude model instead of converting ranks by convenience.
+
+### Independent sleeves were confused with separate models
+
+A long-short crypto design required a valid long basket and a valid short basket at the same time. That made market neutrality an entry requirement. A useful long opportunity could not trade without a simultaneous short opportunity, and vice versa. The proposed correction then jumped too far and treated independent long and short execution as proof that two predictive models were immediately required.
+
+Correction: portfolio sleeves and predictive models are different decisions. Start with one validated cross-sectional ranking model and let the long and short sleeves activate independently. A separate market-direction or timing signal may set each sleeve's gross budget. Split the predictive models only after results support different long-side and short-side relationships.
+
+### A rank-only strategy had no legitimate cash switch
+
+A cross-sectional rank always produces a highest and lowest group. Therefore “only trade the strongest ranks” still forces exposure whenever the universe is non-empty. Turning score distance into expected return does not solve this; it only hides a new magnitude model inside an unvalidated calibration.
+
+Correction: if cash is allowed, define a separate point-in-time direction or timing signal for each sleeve, or later build calibrated top-tail and bottom-tail probability models. Keep market-wide BTC, ETH, breadth, and volatility inputs in the activation layer rather than the coin-ranking layer. Do not call a rank percentile an absolute signal threshold.
+
+### The holding horizon was rejudged before it elapsed
+
+A model ranked future 12-hour relative strength, but the strategy reopened the question every four hours and usually exited after one bar. This paid full round-trip costs before the prediction horizon had a chance to play out.
+
+Correction: freeze members and target weights for the stated horizon. Intermediate checks may enforce only frozen lifecycle, tradability, or severe-risk exits. Rerank and decide renewal after the horizon expires; do not use a fresh overlapping 12-hour prediction to repeatedly cancel the previous one.
+
+### A review boundary was implemented as forced liquidation
+
+A Binance USD-M rank strategy treated the 24-hour review boundary as an unconditional exit. Assets that remained inside the frozen retention band were sold and could be bought again on the next bar only to reset their holding clock. This created orders without new ranking information and made fees, slippage, and funding dominate the weak gross signal.
+
+Correction: distinguish a minimum lock, a periodic eligibility review, and a genuine hard liquidation deadline. For a rank-only strategy, the ordinary boundary is a review: if the side remains allowed and an asset remains tradable and inside the frozen retention band, preserve the exact member and target weight and emit zero orders. Replace only members that fall out. Require an explicit business or risk reason before imposing an unconditional liquidation deadline, and test that continuing members do not create sell-and-rebuy round trips.
 
 ### Costs were deducted after trading instead of deciding whether to trade
 
@@ -75,6 +105,12 @@ Correction: compare expected new holding value with the existing holding or cash
 An intended hold can still create trades when an account layer restores nominal equal weights. A small number of approved member changes combined with high order count or turnover proves the actual engine behavior differs from the strategy decision.
 
 Correction: reconcile decisions to authoritative engine orders. `HOLD`, `HOLD_COST`, `BLOCKED`, and unchanged membership produce zero orders. Never maintain a second account or fee ledger to repair the approved engine.
+
+### A nominal position limit was mistaken for a loss limit
+
+A Binance USD-M research run opened a short with a target weight of 10 percent inside one shared-cash portfolio. The code treated that entry notional as if it capped the asset's possible loss. When the contract price rose by several multiples and no engine-native liquidation occurred, the short consumed almost the whole account; it later recovered on paper after the price fell. The reported return and drawdown therefore described an account contract the strategy never intended.
+
+Correction: state margin mode and loss ownership separately from target notional. If “one coin is 10 percent” is intended to mean that coin can lose at most its allocated 10 percent, use the approved engine's isolated-margin or equivalent independent-cash contract and its native liquidation behavior. Before a real run, replay a multi-fold adverse move and prove that the position is closed from its own allocation, the remaining cash is not used to support it, and no post-liquidation price recovery restores the account. If the approved engine cannot represent this contract, block the formal result rather than clipping losses afterward or building a shadow account.
 
 ### Engineering work became the deliverable
 

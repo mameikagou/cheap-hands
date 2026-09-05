@@ -130,9 +130,23 @@ If the user's question is â€œwhat happens when all legal factors are combined,â€
 
 A cross-sectional rank answers which asset looks better than the others. It does not answer whether any asset is expected to rise enough to buy. A top percentile always exists, so it cannot by itself be an absolute entry rule or a cash switch.
 
-Use the combined score to rank candidates. When the strategy permits cash, separately estimate expected forward absolute return for opening or exiting. For replacement, estimate the new holding's expected improvement over the current holding.
+Separate three jobs:
 
-Trade only when the expected improvement over the same horizon is greater than the complete incremental cost and the frozen safety margin. Otherwise keep the current holding or cash. Ranking buffers, minimum holding time, smoothing, and a maximum number of replacements may reduce turnover, but they do not replace this comparison.
+1. cross-sectional selection chooses stronger or weaker assets;
+2. side activation decides whether the long sleeve or short sleeve is allowed to hold risk;
+3. sizing decides the sleeve and asset weights.
+
+One rank model may drive two independent long and short sleeves. Either sleeve may be at zero while the other is active. This does not by itself require two models. Split long and short models only when the research question and later evidence support asymmetric predictors. If a separate short model emits a short-opportunity score, select its highest scores rather than mechanically selecting its lowest scores.
+
+For a rank-only baseline, use the combined score only to select portfolio members. Freeze the formation rule, target horizon, weights, rank buffer, and replacement limit. Hold the members and target weights through that horizon; an intermediate signal refresh must not re-estimate the same horizon and force an early exit. Only a frozen lifecycle or severe-risk rule may override the hold.
+
+The realized high-rank minus low-rank portfolio return is a valid evaluation result. It is not a point forecast encoded in the score gap. Do not regress rank-score gaps into expected basis points merely to create an entry gate, continuation gate, or Kelly input.
+
+When the strategy permits cash or independent side activation, use a separately validated market-direction or timing signal. A market-wide BTC, ETH, breadth, or volatility state may control sleeve gross exposure, but it is not a cross-sectional coin-ranking factor. Keep this timing layer minimal unless the frozen contract calls for a broader model.
+
+When opening, replacing, or sizing requires an expected-return magnitude, build and validate that magnitude model separately. Do not infer it from ordinal ranks.
+
+If a validated magnitude model exists, trade only when the expected improvement over the same horizon is greater than complete incremental cost and the frozen safety margin. Otherwise keep the current holding or cash. If only ranks exist, do not emit intra-horizon alpha replacements; use the frozen holding and replacement policy, and let the approved engine measure actual costs. Ranking buffers do not turn rank distance into expected return.
 
 Write the position state transition explicitly:
 
@@ -144,7 +158,7 @@ holding -> exit to cash
 blocked or missing executable price -> no new trade
 ```
 
-`HOLD`, insufficient expected improvement, and blocked execution must produce zero orders. Unchanged membership must not trigger hidden equal-weight restoration. Use the approved engine's orders and holdings to verify the strategy implementation; do not build another account or return calculation.
+`HOLD`, insufficient expected improvement, and blocked execution must produce zero orders. During a frozen holding horizon, unchanged membership must also keep the prior target weights and must not trigger hidden equal-weight restoration. Use the approved engine's orders and holdings to verify the strategy implementation; do not build another account or return calculation.
 
 ## Make sample-out-of-sample part of the strategy
 

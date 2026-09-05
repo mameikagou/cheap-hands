@@ -37,6 +37,7 @@ This file is the skill's canonical chapter synthesis of the original book. It is
 
 - A factor-mimicking portfolio should maximize exposure to the target information while diversifying asset-specific noise. The portfolio definition determines what its return means.
 - Single sorting orders assets by a variable, forms portfolios, and compares later returns. A useful pattern normally includes direction, monotonicity across groups, and a meaningful long-short spread—not only one extreme bucket.
+- Sorting assumes only that the sorting variable is associated with factor exposure. It does not assume that the variable value equals the exposure or that their relationship follows a known functional form. Rank gaps therefore are not expected-return magnitudes.
 - Conditional or independent multiple sorting tests whether a variable adds information after controlling another variable. It is the portfolio analogue of asking for incremental predictive value.
 - Time-series regression tests how a portfolio's returns load on factor returns and whether residual return remains. Cross-sectional regression tests whether characteristics or exposures explain differences in later returns across assets. Fama–MacBeth repeats cross-sectional regressions through time and tests the time-series average coefficient.
 - Heteroskedasticity and serial correlation distort ordinary standard errors. White or Newey–West adjustments address different error structures; choosing one is part of the test design.
@@ -62,8 +63,9 @@ This file is the skill's canonical chapter synthesis of the original book. It is
 - Momentum and short-horizon reversal depend on the lookback, skip interval, and holding horizon. A label without those dates does not define a signal.
 - Turnover is not merely liquidity. Depending on its definition and horizon it may reflect attention, disagreement, sentiment, or an unexpected trading shock; average high turnover and abnormal turnover can imply different future-return relations.
 - The chapter's illustrative tests omit transaction costs. That is a research simplification, not permission to omit fees, spread, slippage, market impact, taxes, borrow, or funding from a live strategy.
+- Inspect the long and short legs separately. A strong paper long-short spread can be driven mainly by the low-ranked short leg; if shorting is constrained or its borrow, funding, margin, and trading costs are omitted, the spread can substantially overstate what an investable strategy can earn (section 3.8, chunk 016).
 
-**Strategy consequences:** Recreate definitions rather than names, preserve point-in-time availability, compare weighting choices, control overlapping exposures, and add all costs before deciding whether the factor can be traded.
+**Strategy consequences:** Recreate definitions rather than names, preserve point-in-time availability, compare weighting choices, control overlapping exposures, report both legs and their combined spread, and add side-specific costs before deciding whether the factor can be traded.
 
 **Original coverage:** sections 3.1–3.8, chunks 010–016.
 
@@ -130,9 +132,11 @@ This file is the skill's canonical chapter synthesis of the original book. It is
 - A return predictor is an observable variable used to predict later return. A factor portfolio is a tradable return series. A return model combines predictors; a risk model estimates common exposures and residual covariance. These layers must not be conflated.
 - A useful predictor should have a defensible reason, persistence through time, incremental information, robustness to reasonable definitions, investability after turnover and costs, and evidence beyond one narrow sample when transfer is economically valid.
 - Return prediction may use ranks, scores, regressions, or nonlinear models. A relative rank says which asset looks better, not whether any asset is expected to rise enough to buy.
+- Portfolio sorting forms groups and measures their subsequently realized returns; the realized high-minus-low spread evaluates the sort but does not give the sorting score a return unit. Parameterized return prediction is a separate method.
 - A Barra-style risk model estimates factor exposures, factor covariance, and asset-specific risk. Pure factor portfolios isolate factor exposure, while an investable portfolio also obeys holdings and trading constraints.
 - Portfolio optimization joins expected returns with risk aversion, factor exposures, position bounds, shorting and leverage rules, holding count, tracking error, turnover, and transaction costs. A return model and a risk model can be misaligned if their horizons or factor definitions differ.
 - Linear and nonlinear cost models belong inside the portfolio decision. Costs deducted only after the trade cannot prevent an uneconomic replacement.
+- When a usable return-magnitude estimate is absent, fixed holdings and turnover constraints are legitimate rank-portfolio controls; they must not be described as proof that each trade's predicted return exceeded cost.
 - Smart Beta packages factor exposure in a transparent index form, but index rules, capacity, turnover, crowding, and implementation still determine realized results.
 - Factor timing may use valuation, recent factor return, factor volatility, sentiment, or macroeconomic conditions. The chapter's evidence emphasizes that timing is difficult: complex timing often fails to beat simple diversification after later-period testing and costs.
 - Style analysis and risk attribution explain where a portfolio's returns and losses came from; they do not themselves prove future predictability.
