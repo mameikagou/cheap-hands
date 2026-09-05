@@ -1,4 +1,4 @@
 interface:
   display_name: "因子挖掘"
-  short_description: "依据原书持续纠错并实现含交易规则与样本外验证的因子策略"
+  short_description: "因子研究施工手册：实质规则唯一来源，实现含交易规则与样本外验证的因子策略"
   default_prompt: "Use $mining-factors to update the source-backed factor knowledge when needed and build the complete costed strategy."

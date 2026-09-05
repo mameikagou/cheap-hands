@@ -16,7 +16,7 @@ Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/suiza
 
 ### sanity
 
-Reviews quantitative research ideas and systems against the frozen business contract, local knowledge, prior results, and external evidence before implementation. It keeps weak-factor combination research permissive while guarding against leakage, fake breadth, and execution errors.
+Pure reviewer for quantitative research ideas, campaigns and system mainlines: checks the frozen business contract, knowledge evidence, fatal flaws, campaign depth and system entropy. Factor-research substantive rules (ruler matching, rank-vs-magnitude, holding contracts, weak-factor protection, independence counting) live only in mining-factors; sanity references them and issues verdicts. Keeps weak-factor combination research permissive while guarding against leakage, fake breadth, and execution errors.
 
 ```
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanity/ai-install.md and follow the instructions inside.
@@ -24,7 +24,7 @@ Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanit
 
 ### mining-factors
 
-Mines factors and implements the complete trading strategy: factor combination, entry, holding, replacement, exit, sizing, costs, and sample-out-of-sample evaluation. It keeps a bounded, source-backed chapter synthesis of the original factor-investing book and corrects it in place as the source is reread.
+Mines factors and implements the complete trading strategy: factor combination, entry, holding, replacement, exit, sizing, costs, and sample-out-of-sample evaluation. Single source of truth for how factor research is done correctly — the sanity reviewer references these rules instead of duplicating them. It keeps a bounded, source-backed chapter synthesis of the original factor-investing book and corrects it in place as the source is reread.
 
 ```
 Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mining-factors/ai-install.md and follow the instructions inside.

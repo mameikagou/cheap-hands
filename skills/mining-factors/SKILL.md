@@ -1,154 +1,216 @@
 ---
 name: mining-factors
-description: Use when mining, discovering, iterating, batch-testing, comparing, combining, transferring, or implementing quantitative factors and factor strategies in the analyze repository. The skill maintains a source-backed synthesis of 因子投资方法与实践 and focuses on producing an actual factor strategy—factor inputs, combination, entry, holding, replacement, exit, sizing, costs, and sample-out-of-sample evaluation—without turning research into an infrastructure, permission, audit, registry, or tooling project.
+description: Use when mining, discovering, iterating, batch-testing, comparing, combining, transferring, or implementing quantitative factors and factor strategies in the analyze repository（挖因子、因子组合、回测与策略实现的施工手册）. 本 skill 是"因子研究怎么做对"的实质规则唯一来源：信号用途与尺子、弱因子保护与分层组合、输出单位与调仓门、持有期与订单纪律、独立信息计数、样本外纪律全部写在这里；sanity 只引用章节名做审查裁决。维护 source-backed《因子投资方法与实践》逐章 synthesis，交付因子策略本身——因子输入、组合、入场、持有、替换、退出、仓位、成本与样本内外评估——不把研究变成基础设施、权限、审计或工具项目。
 ---
 
-# Mining Factors
+# 因子挖掘施工手册
 
-Produce the factor strategy the user asked for. The deliverable is the strategy definition, implementation, backtest, and evidence—not a new research-management system.
+交付物是用户要的因子策略：策略定义、实现、回测和证据——不是一个新研究管理系统。
 
-## Fix the strategy question first
+## 边界与仲裁判据（先于一切）
 
-Write one sentence before acting:
+- 本文件是"因子研究怎么做对"的实质规则唯一来源。方法论、策略构造、执行纪律、报告要求都在这里全文写出。
+- `sanity` 是审查协议（怎么发现不对：状态标签、合同守卫、campaign 审计）。它只引用本文件的章节名出裁决，不复述规则内容。
+- 产生新教训时先问一句：它规定的是"研究时该怎么做"还是"审查时该查什么"？前者写进本文件——属于书的知识进 `references/book-chapter-summaries.md`，属于本地失败经验进 `references/research-lessons.md`；后者才进 sanity。
+- 开始前必须用一句话复述："我要为用户产出什么最终结果，它通过哪条现有主线产生"。无法回答时先停下来澄清，不许边施工边换目标。
 
-`Build and evaluate <strategy> in <market/universe>, using information known at <signal time>, trading at <execution time>, and holding for <horizon>.`
+## 先钉死策略问题
 
-Read the current user decision, applicable `AGENTS.md`, frozen PLAN, [references/book-chapter-summaries.md](references/book-chapter-summaries.md), and [references/research-lessons.md](references/research-lessons.md).
+动手前写一句话：
 
-When the local Brain is available, read the original book `因子投资方法与实践` before its notes or summaries. For factor mining, the minimum original-book route is:
+`在 <市场/标的池>，用 <信号时点> 已知的信息构建并评估 <策略>，在 <执行时点> 交易，持有 <周期>。`
 
-- chapter 2: portfolio sorting, multiple sorting, regression, incremental information, anomaly tests, and model comparison;
-- chapter 6: p-hacking, multiple testing, economic explanations, costs, and sample-out-of-sample deterioration;
-- chapter 7: return predictors, the six predictor criteria, return prediction, portfolio construction, constraints, cost models, factor combination, and the difficulty of factor timing.
+然后读取：当前用户决定、适用的 `AGENTS.md`、已冻结 PLAN、[references/book-chapter-summaries.md](references/book-chapter-summaries.md)、[references/research-lessons.md](references/research-lessons.md)。
 
-Then read related failure records, the live strategy, `sanity`, relevant Brain notes, and available OpenMemory `investment-learning` records. The book supplies the research method; the repository and retained evidence supply the current market, data, execution, and failure constraints.
+本地 Brain 可用时，先读原书《因子投资方法与实践》再读笔记或摘要。因子挖掘的最小原文路径：
 
-The current contract controls the research budget, candidate types, models, time split, costs, and stopping rule. This skill must not invent caps, rounds, gates, a Goal, or a simpler substitute task.
+- 第 2 章：组合排序、多重排序、回归、增量信息、异象检验和模型比较；
+- 第 6 章：p-hacking、多重检验、经济学解释、成本和样本外衰减；
+- 第 7 章：收益预测变量、六项预测变量标准、收益预测、组合构建、约束、成本模型、因子组合和因子择时的困难。
 
-## Improve the chapter synthesis when reading the source
+再读相关失败记录、当前实盘策略、`sanity`、相关 Brain 笔记和可用的 OpenMemory `investment-learning` 记录。书提供研究方法；仓库和留存的证据提供当前市场、数据、执行和失败约束。
 
-Every time original book text is read for a factor task, compare it with the matching section in [references/book-chapter-summaries.md](references/book-chapter-summaries.md).
+当前合同决定研究预算、候选类型、模型、时间切分、成本和停止规则。本 skill 不得自行发明上限、轮次、门槛、Goal 或更简单的替代任务。
 
-Update that section in place before finishing only when the original text adds or corrects a decision-relevant point about factor definition, testing, combination, portfolio construction, execution, or interpretation. Cite the original section or chunk range, merge duplicates, and delete superseded wording. Keep the fixed seven-chapter structure.
+## 读书时持续更新逐章 synthesis
 
-Do not add a reading log, timestamp, agent note, changelog, or one file per reading. Do not promote a local backtest or memory into a claim about the book; put reusable local failures in [references/research-lessons.md](references/research-lessons.md). No change is the correct result when the source adds nothing material.
+每次为因子任务读原书文本，都与 [references/book-chapter-summaries.md](references/book-chapter-summaries.md) 的对应章节比对。
 
-After a material edit, validate the skill. If the task is already authorized to update the source repository, apply the same edit there and regenerate its installers. Otherwise report the local correction without silently publishing it.
+仅当原文新增或修正了与决策有关的点（因子定义、检验、组合、组合构建、执行或解释）时，才在收工前就地更新该章节：引用原文小节或 chunk 范围、合并重复、删除过时措辞。保持固定七章结构。
 
-## Keep the research objects distinct
+不新增阅读日志、时间戳、agent 笔记、changelog 或每次读一个文件。不得把本地回测或记忆升格为"书里的说法"；可复用的本地失败写进 [references/research-lessons.md](references/research-lessons.md)。重读没有实质增量时，不改文件就是正确结果。
 
-Use the book's distinctions instead of calling every column an “alpha factor”:
+做实质性修改后校验 skill。若本任务已授权更新源仓库，把同样修改应用到源仓库并重新生成安装器；否则报告本地修正但不静默发布。
 
-- A **return predictor** is a variable observed at the signal time and used to predict later asset returns.
-- A **factor or anomaly portfolio** is a tradable portfolio formed from one or more predictors; its return is not the same object as the predictor value.
-- A **return model** combines predictors into expected returns or scores.
-- A **risk model** estimates the covariance and exposures used to control portfolio risk.
-- A **trading strategy** turns the return model into positions through entry, holding, replacement, exit, sizing, and costs.
+## 分清研究对象
 
-Test the object the user asked about. Predictor evidence, factor-portfolio evidence, combined-model evidence, and full-strategy evidence are related but not interchangeable.
+用书的区分代替"什么都叫 alpha 因子"：
 
-## Define the complete strategy
+- **收益预测变量**：信号时点可观测、用于预测未来收益的变量。
+- **因子或异象组合**：由一个或多个预测变量构造的可交易组合；其收益与预测变量值不是同一个对象。
+- **收益模型**：把预测变量组合成期望收益或分数。
+- **风险模型**：估计协方差和暴露，用于控制组合风险。
+- **交易策略**：通过入场、持有、替换、退出、仓位和成本把收益模型变成头寸。
 
-Freeze the parts that determine what is bought or sold:
+检验用户实际问的对象。预测变量证据、因子组合证据、组合模型证据和完整策略证据相关但不可互换。
 
-- market and point-in-time tradable universe;
-- signal fields and the time each field becomes known;
-- prediction target and holding period;
-- factor direction and normalization;
-- factor combination or model;
-- entry rule;
-- continuing-hold rule;
-- replacement rule;
-- exit or cash rule;
-- position count, weight or sizing rule;
-- signal time, order time, executable price, rebalance frequency;
-- fees, spread, slippage, impact, funding or borrow cost, taxes, minimum commission, and lot or quantity rules;
-- development period and sample-out-of-sample period.
+## 定义完整策略
 
-If one of these is absent, complete the strategy from the frozen PLAN or live strategy before inventing new research machinery.
+冻结决定买卖的全部要素：
 
-## Match factors to their actual job
+- 市场和时点可交易标的池；
+- 信号字段及每个字段的可知时点；
+- 预测目标和持有周期；
+- 因子方向与归一化；
+- 因子组合或模型；
+- 入场规则；
+- 续持规则；
+- 替换规则；
+- 退出或空仓规则；
+- 持仓数量、权重或仓位规则；
+- 信号时间、下单时间、可执行价格口径、再平衡频率；
+- 佣金、价差、滑点、冲击、资金费或借券费、税费、最低佣金、整手或数量规则；
+- 开发区间与样本外区间。
 
-Classify each input by what it predicts:
+缺哪一项，先从冻结 PLAN 或实盘策略补齐，再考虑发明新的研究机器。
 
-- Cross-sectional selection ranks assets at the same time.
-- Market timing decides whether the strategy should hold risk or cash.
-- Factor timing changes the weight of a factor family.
-- Exit or tail-risk signals decide whether a realizable loss should be avoided.
+## 信号用途与尺子对齐
 
-Use a matching target and metric. Do not reject a market-wide signal because it has no cross-sectional RankIC. Do not claim an exit signal failed merely because it did not improve entry ranking.
+先给每个候选声明一个主要用途。用途决定用什么尺子量，不决定这个点子有没有资格继续研究：
 
-Keep four conclusions separate:
+- **横截面选股**：同一天比较标的之间谁更值得持有。看同一截面的排序、分组收益和加入组合后的增量。
+- **市场整体择时**：判断当前应整体多持、少持还是空仓。市场级信号在同一天对所有标的相同，不能因为它没有横截面 RankIC 就判无效；看它能否在时间上识别事前定义的市场状态。
+- **因子或风格择时**：判断价值、动量、质量、成长等哪类信号当前更可能有效。检验它能否解释或预测对应因子组合此后的表现，而不是拿它直接给个股排队。
+- **退出或尾部风控**：判断何时减仓、延迟买入或避免大亏。看它减少了什么可实现损失，不能强迫它提高入场收益。
 
-1. whether an input contains predictive information;
-2. whether inputs improve each other when combined;
-3. whether the complete holding and replacement strategy works after costs;
-4. whether a formal engine can execute it under real constraints.
+市场级情绪温度与个股级情绪特征要分开：前者更接近市场或因子择时；后者（个股换手、关注度、彩票偏好）仍可能是横截面选股信号。不得写成"情绪只能择时"或"情绪一定能选股"。
 
-A high-turnover strategy can fail while its weak inputs remain useful. A fixed formula can fail without rejecting every factor family it contains.
+尺子与用途不匹配时，换对尺子再评价；不得把"用错评估方法"写成"点子失败"。用途允许保留多个解释做诊断，但正式结论只能对应事前声明的主要用途。
 
-## Mine real information, not formula count
+四层结论始终分开报告：
 
-Use the budget frozen by the user. Search genuinely different economic mechanisms, data sources, state definitions, residual information, event orderings, interactions, and models. Do not spend the campaign mainly changing adjacent windows, thresholds, weights, or names.
+1. 输入是否含预测信息；
+2. 输入合在一起是否互相增强；
+3. 完整持有与替换策略费后是否成立；
+4. 正式引擎能否在真实约束下执行它。
 
-For each candidate, record its economic mechanism, fields, formula, expected direction, horizon, applicable state, and what would disprove it. Count separately:
+高换手策略可以失败而它的弱输入仍然有用；一个固定公式失败不等于它所在的因子家族失败。
 
-- formulas tested;
-- distinct economic mechanisms;
-- effective independent information dimensions.
+## 挖真实信息，不是公式数量
 
-Several statistics computed from the same assets, dates, and future-return label are different views of the same evidence, not independent confirmations.
+预算按合同冻结。搜索真正不同的经济机制、数据源、状态定义、残差信息、事件排序、交互和模型；不要把主要预算花在相邻窗口、阈值、权重和换名上。
 
-Use the book's six criteria as a diagnosis and promotion checklist, not as an automatic standalone-profit gate:
+每个候选记录：经济机制、字段、公式、预期方向、周期、适用状态，以及什么结果会证伪它。
 
-- logic: identify a risk-compensation, mispricing, information-flow, or market-mechanism reason;
-- persistence: check whether the relationship survives time rather than one fitted interval;
-- incremental information: control existing predictors through conditional sorting, regression, or another matching test;
-- robustness: vary sensible parameters, algorithms, and subperiods without changing the hypothesis;
-- investability: match information decay to holding time and measure turnover, liquidity, and complete costs;
-- pervasiveness: test other assets or markets only when the mechanism and data meaning transfer.
+三个计数分开报告：
 
-A weak legal input may remain useful in a joint model even when it is not a profitable standalone strategy. The six criteria describe the quality and limitations of evidence; they do not authorize silently changing the user's union-of-inputs question into a survivor contest.
+- 写过的公式数；
+- 代表的经济机制数；
+- 组合里剩余的有效独立信息维度。
 
-## Keep legal weak factors for the joint strategy
+同一批标的、同一段时间、同一未来收益标签算出的 RankIC、分位收益、top-N 收益和胜率，是同一份证据的不同角度，不是多次独立确认。报告证据之间的共享标签、共享样本和重叠程度；几份、分几段、什么统计阈值由项目合同决定，skill 不预设。更接近独立的证据：事前冻结的另一连续时间块、不同但事前定义的市场状态、不同市场、真正不同的未来目标。
 
-Unless the user contract says otherwise, do not require every input to make money alone, cover all fees alone, pass every year, or beat the incumbent before combination.
+两两相关系数只能发现明显换皮，不能证明整体独立。按项目规模使用表达式去重、相关聚类、有效秩、条件残差或正则化模型判断重复程度；不预设 `0.9` 之类的统一门槛，具体数值由 campaign 合同和开发数据冻结。
 
-Remove an input only when it uses future data, cannot be reproduced, produces no usable variation, has a broken mapping, uses an impossible trade, or is proven to be the same information as another input. Otherwise keep weak but legal inputs available to the combined strategy.
+大批量搜索必须登记全部尝试和父子关系，不能只保存赢家；公开因子和常见公式会因拥挤、套利和市场制度变化而衰减，保护收益靠时间语义、数据质量、组合纪律、完整成本和持续样本外检验，不靠换名、堆窗口或多报几个相似指标。
 
-For the first joint baseline:
+把书的六项标准当诊断和晋级检查表，不当独立盈利门：
 
-1. put every legal input on a comparable scale at each signal time;
-2. combine close variants inside the same economic family;
-3. combine families so a family does not gain weight merely because it has more formulas;
-4. retain a simple equal-weight or score baseline;
-5. run the regularized linear, nonlinear, interaction, or machine-learning combinations allowed by the frozen contract.
+- **逻辑**：说得出风险补偿、错误定价、信息流动或市场机制的原因；
+- **持续性**：关系随时间存续，而不是单段拟合；
+- **增量信息**：用条件排序、回归或匹配检验控制已有预测变量；
+- **稳健性**：在合理参数、算法和子区间间变化而不改假设；
+- **可投资性**：信息衰减与持有时间匹配，度量换手、流动性和完整成本；
+- **普适性**：仅在机制和数据可迁移时才检验其他资产或市场。
 
-If the user's question is “what happens when all legal factors are combined,” run that union directly. Do not replace it with a contest in which each weak factor or weak-factor subset must defeat the original strategy first.
+弱但合法的输入即使单独不赚钱，仍可能在联合模型中有用。六项标准描述证据的质量和局限，不授权把用户的"全部合法因子合体"问题偷偷改成幸存者淘汰赛。
 
-## Turn the factor score into a trading strategy
+## 弱因子保护与分层组合
 
-A cross-sectional rank answers which asset looks better than the others. It does not answer whether any asset is expected to rise enough to buy. A top percentile always exists, so it cannot by itself be an absolute entry rule or a cash switch.
+除非用户合同另有规定，不要求每个输入单独赚钱、单独覆盖全部费用、逐年有效或先跑赢现役策略才准进组合。
 
-Separate three jobs:
+只在以下情况删除输入：使用未来数据、无法复现、没有可用变异、映射损坏、依赖不可能成交，或已证明与另一输入是同一信息。其余弱而合法的输入保留给组合。
 
-1. cross-sectional selection chooses stronger or weaker assets;
-2. side activation decides whether the long sleeve or short sleeve is allowed to hold risk;
-3. sizing decides the sleeve and asset weights.
+进原料池前只做最低资格检查：数据时点正确、公式可复现、输出不是常数、覆盖足以参加训练、无致命实现错误，并在挖掘期提供微弱正向信息或在已冻结组合模型中提供条件增量。合同允许研究非线性交互时，单因子边际方向接近零不构成自动否决——看它与其他信号一起使用时，是否在时间顺序正确的开发验证中增加信息。
 
-One rank model may drive two independent long and short sleeves. Either sleeve may be at zero while the other is active. This does not by itself require two models. Split long and short models only when the research question and later evidence support asymmetric predictors. If a separate short model emits a short-opportunity score, select its highest scores rather than mechanically selecting its lowest scores.
+相似性首先用于描述和计数，不自动用于删除。同一经济家族、原始值相关、持仓重叠、某些年份同涨同跌，只说明可能共享部分信息；不同窗口、覆盖范围、缺失模式、非线性交互或极端行情反应仍可能产生组合价值。只有能证明两个公式在正式样本上排序等价、可用范围等价、交易含义等价且无任何条件增量时，才按重复信息删除；证明不了就标记为可能重复并保留，交给开发期组合与归因处理。
 
-For a rank-only baseline, use the combined score only to select portfolio members. Freeze the formation rule, target horizon, weights, rank buffer, and replacement limit. Hold the members and target weights through that horizon; an intermediate signal refresh must not re-estimate the same horizon and force an early exit. Only a frozen lifecycle or severe-risk rule may override the hold.
+筛选前后做两次不同的重复性审查：筛选前只清理确定的公式复制、时间泄漏和无效输出，避免过早删掉弱种子；筛选后检查幸存者是否全押在同一经济机制、风格暴露或市场状态上。若一批候选总在同一时期一起好、一起坏，如实记为同一家族或共同风险来源，不得逐个计成独立的声音。
 
-The realized high-rank minus low-rank portfolio return is a valid evaluation result. It is not a point forecast encoded in the score gap. Do not regress rank-score gaps into expected basis points merely to create an entry gate, continuation gate, or Kelly input.
+联合基线的标准动作：
 
-When the strategy permits cash or independent side activation, use a separately validated market-direction or timing signal. A market-wide BTC, ETH, breadth, or volatility state may control sleeve gross exposure, but it is not a cross-sectional coin-ranking factor. Keep this timing layer minimal unless the frozen contract calls for a broader model.
+1. 每个信号时点把所有合法输入放到可比尺度上；
+2. 同一经济家族内的近似变体先在家族内部合成；
+3. 跨家族合成，不让公式多的家族仅因数量而绑架整体权重；
+4. 保留等权或简单打分的可解释对照；
+5. 按冻结合同允许时再跑正则化线性、非线性、交互或机器学习组合。
 
-When opening, replacing, or sizing requires an expected-return magnitude, build and validate that magnitude model separately. Do not infer it from ordinal ranks.
+书中的稳健默认做法是分层组合：价值、质量、动量、情绪等家族内部先合成，再组合不同家族。等权对照是尺子，不是禁止复杂模型的理由；不得把书中的简单方法误写成禁止机器学习。
 
-If a validated magnitude model exists, trade only when the expected improvement over the same horizon is greater than complete incremental cost and the frozen safety margin. Otherwise keep the current holding or cash. If only ranks exist, do not emit intra-horizon alpha replacements; use the frozen holding and replacement policy, and let the approved engine measure actual costs. Ranking buffers do not turn rank distance into expected return.
+用户问"所有合法因子合体是什么结果"，就直接跑那个 union，不得替换成"每个弱因子先单独击败原策略"的资格赛。
 
-Write the position state transition explicitly:
+## 把因子分数变成交易策略
+
+### 三个任务
+
+横截面排序回答"谁比谁好"，不回答"有没有谁值得买入"。高分位永远存在，所以它本身不是绝对入场规则，也不是空仓开关。三个任务分开：
+
+1. 横截面选择：挑更强或更弱的标的；
+2. 方向开关：决定多头袖套或空头袖套是否允许持有风险；
+3. 仓位：决定袖套和各标的权重。
+
+一个排序模型可以驱动多空两个独立袖套：一边可以为零而另一边持仓，这不自动要求两个模型；只有研究问题和后续证据支持不对称预测变量时才拆成多空两个模型。若单独的空头模型输出"做空机会分数"，选它最高分而不是机械选最低分。
+
+单独的、经过验证的市场方向或择时信号才能决定空仓和袖套总仓位。BTC、ETH、全市场宽度或波动率状态可以控制袖套 gross 暴露，但不是横截面币种排序因子，不得混入个体排序。除非冻结合同要求更广模型，择时层保持最小。
+
+### 排序是顺序，不是幅度
+
+RankIC、分位排名、标准分数和高低组顺序只说明同一时点谁相对更强；它们没有天然的收益基点单位。
+
+- 高低组已实现收益差是评估结果，不是编码在分数差里的点预测。
+- 不得仅用历史回归把分数差换算成预计收益基点，再用于开仓门、续持、换仓或 Kelly 仓位。时间上没偷看未来，不等于输出含义成立。
+- 需要幅度时，另建并独立验证收益幅度模型；做不到时对该功能失败关闭，而不是让排序分数冒充。
+
+有验证过的幅度模型时：只有新持仓在同一持有期的预期提升（保守估计）严格大于完整增量成本加冻结安全余量，才交易；否则保持当前持有或空仓。
+
+只有排序模型时：不在目标周期内做 alpha 替换；用冻结的建仓分组、持有期限、排名缓冲和最大替换数控制换手，由批准引擎测量实际费用。排序缓冲不会把名次距离变成期望收益。
+
+### 持有期有三种合同
+
+看到"持有 12 小时""最多 24 小时"之类说法，先区分：最短锁定期、到期复核间隔、无条件清仓期限。不得在业务理由未写明时把复核间隔实现成到点卖出。
+
+排序策略默认：冻结锁定期结束后复核资格——方向仍允许、资产仍可交易且仍在事前冻结的排名保留区内时，保持原成员与原目标权重，零订单；只有掉出保留区、方向关闭、资产不可交易或事前冻结的风险规则触发时才退出或替换。
+
+若确实要无条件清仓期限，合同必须给出独立的业务或风险理由，并在冻结前承认由此产生的完整卖出、重新买入和空仓间隔成本。禁止只为重置持仓时钟把仍然合格的资产卖出后下一根买回。
+
+### 增量成本与调仓门
+
+有幅度模型时，换仓前必须用决策时已可见的信息比较：新组合在冻结持有期内相对当前组合的预期超额收益提升，与本次调仓新增的完整交易成本；两者换算到同一单位（如账户金额或基点）。
+
+增量交易成本至少包括：
+
+- 买卖双边佣金，小账户每笔最低佣金（按实际订单笔数计）；
+- 买卖价差、滑点、市场冲击和成交量容量约束；
+- 税费、资金费、借券费或品种特有费用；
+- 整手、现金不足、涨跌停、停牌或缺价造成的部分成交和重复下单成本。
+
+具体纪律：
+
+- 新标的排名更高、分数更强或目标权重小幅变化，都不自动构成调仓理由。
+- 预期 alpha 幅度必须来自信号日可用、按冻结方法训练并独立验证的幅度模型；不得用调仓后真实收益倒推。
+- 排名缓冲、最小持有期、调仓容忍带和每日最大替换数对纯排序基线是合法换手控制，但必须如实称为排序组合实验，不得声称逐笔证明了期望收益高于成本；对有幅度模型的策略，它们不能替代净增益门。
+- 止损、强制降风险、合规限制或卖出已不可继续持有的资产不属于单纯追 alpha 的换仓：把事前可估计的损失规避或风险预算释放作为收益，按冻结风控合同判断。
+- 若系统无法合理估计预期幅度或完整增量成本，依赖精确净增益的正式调仓失败关闭；研究阶段可运行冻结持有期的排序组合并标记其边界，不得默认获得了精确收益预测。
+
+### 成交价缺失必须失败关闭
+
+合同规定下一交易日开盘成交时，必须直接使用该日真实开盘价。开盘价缺失、无效或无法验证时，该订单记为未成交或阻塞；不得自动改用收盘价、均价或昨收。买卖同规则；卖不掉的仓位继续占用资金、持仓名额和风险额度。
+
+沿调用链检查回测引擎、交易所适配层和第三方库是否内置价格回退；至少用一个"开盘价缺失但收盘价存在"的回归测试证明系统不会偷偷按收盘价成交，并在正式结果中统计这类订单。发现回退必须修复，并用冻结候选、冻结参数重放受影响结果；工程修复不算调参机会。
+
+### 头寸状态机与零订单契约
+
+显式写出持仓状态转移：
 
 ```text
 cash -> open
@@ -158,41 +220,79 @@ holding -> exit to cash
 blocked or missing executable price -> no new trade
 ```
 
-`HOLD`, insufficient expected improvement, and blocked execution must produce zero orders. During a frozen holding horizon, unchanged membership must also keep the prior target weights and must not trigger hidden equal-weight restoration. Use the approved engine's orders and holdings to verify the strategy implementation; do not build another account or return calculation.
+`HOLD`、预期提升不足和执行阻塞必须产生零订单。冻结持有期内成员不变时保持原目标权重，不得触发隐性等权重建。
 
-## Make sample-out-of-sample part of the strategy
+只有四类来源可以产生订单：初次建仓、事前冻结的风险切换、上次已批准但未成交订单的重试（必须标记为重试，不得伪装成日常再平衡）、通过完整净增益门的替换。
 
-The development and sample-out-of-sample periods belong in the strategy definition alongside the formula, weights, holding rule, and costs.
+每个目标持仓决定要与账户层实际订单逐笔对照：若"不允许交易"的决定产生了订单，或"获批替换很少"但换手和订单数仍高，说明策略决定在传到账户时被另一套再平衡逻辑改写——这是致命实现错误，修复后必须重跑正式结果，不得沿用旧净值。用批准引擎的订单与持仓验证策略实现；不要另建账户或收益计算。
 
-- Use development data to choose factors, directions, transforms, models, thresholds, holding rules, and cost gates.
-- Before sample-out-of-sample evaluation, freeze the complete strategy: factor set, combination, entry, hold, replacement, exit, sizing, costs, universe, and dates.
-- Run the frozen complete strategy once on the sample-out-of-sample period.
-- Do not use that result to tune the same strategy and still call the same period sample-out-of-sample.
-- If the period was already examined, label it retrospective validation; genuinely new evidence begins with later data not used to design the strategy.
+### 回归测试最低覆盖
 
-Do not build database roles, permission services, separate data roots, reveal APIs, access-denied tests, or “mechanical seal” infrastructure for this skill. Use the repository's existing time split and research runner. Sample-out-of-sample discipline is a strategy and research rule unless the user explicitly asks for infrastructure enforcement.
+- 幅度模型策略：预期提升小于成本零交易；恰等于成本零交易；超过成本加安全余量才交易；小账户最低佣金改变结论的案例。
+- 纯排序基线：持有期内成员与目标权重不变、每次检查零订单、到期才重新排序、实际费用由批准引擎产生。
+- 持有期：同一成员连续多个复核期仍合格时零订单；单成员掉出时只交易该成员及其替代者；不因其他成员续持重建整个袖套；不因复核到期制造同资产卖出再买回。
+- 成交价：开盘价缺失、收盘价存在时不产生按收盘的隐性成交。
 
-## Implement through the existing research path
+两类结果分别报告费后净值、换手和成本，不得混写。
 
-Use the local inventory to verify the fields and point-in-time coverage, then implement the factor and complete strategy through the repository's current factor, model, target-weight, and approved backtest paths.
+## 样本外是策略的一部分
 
-Do not create a new CLI, database, registry, backtester, account, artifact tree, production package, or audit framework. If an actual bug prevents the requested strategy from running correctly, make the smallest repair on the existing path, rerun the strategy, and return to research. Do not turn cleanup, hashes, schemas, permissions, or architecture review into the deliverable.
+开发区间和样本外区间与公式、权重、持有规则和成本一起写进策略定义。
 
-Use Qlib, VectorBT Pro, or NautilusTrader only as assigned by the current repository rules. The strategy code calculates factors, predictions, trade decisions, and target holdings; the approved engine calculates orders, fills, holdings, cash, fees, and returns.
+- 用开发区数据选因子、方向、变换、模型、阈值、持有规则和成本门。
+- 样本外评估前冻结完整策略：因子集、组合、入场、持有、替换、退出、仓位、成本、标的池和日期。
+- 完整冻结策略在样本外只跑一次。
+- 不得看完样本外结果再调同一策略仍称它样本外。
+- 已看过该区间就只能叫回溯时间验证；真正的新证据从设计策略之后、未参与设计的数据开始。
+- 测试验证期对开发区保持不可见：开发区可以按合同广泛搜索、组合和训练；测试区只在候选及全部规则冻结后打开。
 
-## Run and diagnose the complete result
+重复访问一个历史区间就使它成为已知证据，换 campaign 编号或新切时间段都不改变这一点。
 
-At minimum, report:
+不得为本 skill 建数据库角色、权限服务、独立数据根、reveal API、access-denied 测试或"机械封存"基础设施。用仓库现有时间切分与研究 runner；样本外纪律是策略与研究规则，除非用户明确要求工程强制。
 
-1. the factors and economic families used;
-2. the exact combination or model;
-3. what is bought or sold, when, and for how long;
-4. the entry, hold, replacement, exit, and sizing rules;
-5. the development and sample-out-of-sample dates;
-6. gross return, every material cost, net return, drawdown, turnover, and holding duration;
-7. how often the strategy stayed in cash, held, replaced, or exited;
-8. factor information, combination improvement, and complete-strategy performance as separate conclusions;
-9. whether the result depends on one period, asset, or near-duplicate family;
-10. the next strategy change supported by the evidence, or the narrow reason to stop.
+## 时点数据与动态股票池
 
-Lead with the actual strategy result. Use plain Chinese and concrete trading behavior. Mention engineering only when a real defect changed or blocked the result.
+按当时可知信息构造的动态标的池必须逐日使用当日真实存在且可交易的标的。不得因为今天有 30 只产品，就要求十年前每个截面也至少有 20 只；不得用样本末期覆盖率、当前成分数或当前流动性门槛把早期合法历史整段排除——那会让模型只在近年工作，并把"人为删掉早期样本"误报成"早期没有信号"。
+
+最小样本数由当日计算本身决定：例如带截距的一元横截面斜率至少需要两个有效且不完全相同的观测；合同另有统计稳定性门槛时，必须在看结果前冻结并说明它为什么适用于每个历史时期，不从当前池子大小倒推与数学无关的固定门槛。
+
+按日期报告实际可用标的数、被排除日期和首次产生有效估计的日期。用"早期少、后期多"的合成动态池做回归测试，证明早期日期达到数学下限时会进入计算；早期数据确实不足时如实标记证据不足或数据阻塞，不得静默跳过多年再把近年结果包装成全历史结论。
+
+日期语义基线：只有日期没有时刻的公告，除非证明更早可知，按下一交易日可用处理。财务修正快照必须有可证明的历史版本，不能用今天的值回填。
+
+新数据可以按用户授权进入正式数据湖统一维护；不得在因子运行时临时抓取，也不得用脏近似字段替代正确语义。
+
+## 带杠杆品种的单币风险额度
+
+看到"单币 10% 仓位""每币分配 10% 资金"，默认解释为该币最多损失账户的 10%，而不只是开仓名义等于 10%。除非用户明确批准全仓保证金，必须使用逐币独立保证金或等价的逐币独立现金组；一只币的亏损不得由其余未分配资金或其他币的保证金兜底。
+
+空头价格可上涨超过 100%，"开仓名义 10%"本身没有最大损失含义。必须沿批准引擎的真实账户语义检查保证金、维持保证金、强平价、强平费用和强平后的持仓状态。若批准引擎不能原生表达逐币独立保证金和强平，不得用共享现金、无限续命、事后截断净值或手写影子账户冒充正式结果；停在开发段并报告致命实现冲突。
+
+回归测试至少构造一只空头标的价格上涨数倍的路径，并证明：该币在耗尽分配额度前后由批准引擎平仓；该币总损失不超过分配额度及事前冻结的强平摩擦；其他资金和其他持仓不承担这笔亏损；强平后不得继续享受价格回落的恢复收益。报告分开给出目标名义仓位和价格变化后的实际风险，不得用前者冒充后者。
+
+## 用现有研究主线实现
+
+用本地 inventory 验证字段和时点覆盖，然后通过仓库当前的因子、模型、目标权重和批准回测路径实现因子与完整策略。
+
+不新建 CLI、数据库、注册表、回测器、账户、产物树、发布包或审计框架。出现真正阻碍策略正确运行的缺陷时，在现有路径上做最小修复、重跑策略、回到研究。不把清理、哈希、schema、权限或架构评审变成交付物；工程只在改变了或阻塞了结果时出现在报告里。
+
+Qlib、VectorBT Pro、NautilusTrader 只按仓库现行分工使用：策略代码算因子、预测、交易决定和目标持仓；批准引擎算订单、成交、持仓、现金、费用和收益。
+
+## 运行并诊断完整结果
+
+至少报告：
+
+1. 使用了哪些因子和经济家族；
+2. 确切的组合或模型；
+3. 买什么、卖什么、何时、持有多久；
+4. 入场、续持、替换、退出和仓位规则；
+5. 开发与样本外日期；
+6. gross 收益、每项实质成本、net 收益、回撤、换手和持仓时长；
+7. 策略停留在空仓、持有、替换、退出的频率；
+8. 因子信息、组合改进和完整策略表现作为三条独立结论；
+9. 结果是否依赖单一时期、单一标的或近似重复的家族；
+10. 证据支持的下一个策略改动，或停止的狭窄理由。
+
+开发区的正 RankIC、正收益或漂亮曲线都不等于可交易。收益集中在一个月或一个标的、删除最佳片段后崩溃、实际换手远高于策略允许的替换数时，必须分别检查信息稳定性、组合集中度，以及策略决定是否被账户层改写；不得用聚合指标掩盖实现错误。
+
+以真实策略结果开头，用人话和具体交易行为描述。

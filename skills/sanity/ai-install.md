@@ -53,7 +53,7 @@ Read `$HOME/.claude/skills/sanity/SKILL.md` and confirm:
 Tell the user:
 "sanity installed successfully!
 - Location: ~/.claude/skills/sanity/
-- Trigger: 在写代码、拉数据、做回测、挖因子或改造量化系统前，先读取用户已冻结的业务合同和项目事实，再检索本地 Brain、planning、书籍、知识库、论文与可靠网络资料，对点子、研究计划、跨市场传导、事件信号、机器学习方案和系统主线做有证据的常识
+- Trigger: 对量化点子、研究计划与系统主线做有证据的常识审查与裁决：核对已冻结合同、检索 Brain/书籍/论文/知识库与可靠网络资料、判定致命问题（未来数据、样本外污染、不可成交、决定被账户层改写）、做 campaign 深度审计、守卫主线与系统熵增
 - To uninstall: delete the ~/.claude/skills/sanity/ directory"
 
 ## Rollback
