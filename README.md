@@ -8,6 +8,14 @@ A collection of Claude Code skills. Install any skill by pasting one line into C
 
 Copy any line below into your Claude Code conversation. Claude will fetch the instructions and install the skill automatically.
 
+### clash-party-safe-update
+
+Diagnoses Windows/WSL TUN failures and guards Clash Party rule updates without routine restarts. Includes read-only inspection, physical-interface forwarding checks, reload safeguards, and a local rollback procedure.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/clash-party-safe-update/ai-install.md and follow the instructions inside.
+```
+
 ### suization（酥化）
 
 Turns real project notes into strong, interview-ready technical chains, resume bullets, and deep-dive preparation without inventing ownership or metrics.
@@ -104,6 +112,7 @@ Fetch the following URLs one by one and follow the instructions inside each:
 8. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/mining-factors/ai-install.md
 9. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanity/ai-install.md
 10. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/quant-ui-sync/ai-install.md
+11. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/clash-party-safe-update/ai-install.md
 ```
 
 ## Uninstall
