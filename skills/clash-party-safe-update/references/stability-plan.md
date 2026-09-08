@@ -30,6 +30,12 @@ SharedAccess or change global routing/firewall settings based on that alone.
   proceeding. Do not blame a user or another agent without evidence.
 - Do not automatically upgrade, switch cores, or reset Windows/WSL networking
   to address a connection error. Such changes need a separate authorized task.
+- Inspect subscription `autoUpdate` flags before blaming unattended refresh.
+  They were disabled on the reviewed machine. An enabled application update
+  check is not proof of installation or restart. Also inspect
+  `autoCloseConnection`: node/mode changes can close connections even when
+  the separate hot-reload auto-close preference is false. Do not change the
+  node or mode to test reachability on the active control channel.
 
 ## Detection without restart loops
 
@@ -65,6 +71,22 @@ heartbeats. In this incident, heartbeats resumed but a task still logged
 message/reporting timeouts and later exhausted completion retries. A healthy
 heartbeat or `/health` endpoint must not hide that failure. Do not assume a
 post-repair timeout is an old socket unless request timing proves it.
+
+The reviewed daemon build skips HTTP heartbeat when WebSocket acknowledgments
+are recent. Its idle HTTP connection cleanup is triggered by consecutive HTTP
+heartbeat failures, so a healthy WebSocket alone cannot exercise that recovery
+path. This is a recovery-coverage gap, not proof that stale sockets caused every
+observed timeout. Completion retries are bounded; after exhaustion the reviewed
+build leaves the task pending instead of retaining a durable retry queue.
+The informational `task completed` log precedes the server callback.
+
+The included `check-agent-log.py` checks message-report errors at DEBUG level,
+keeps old terminal retry failures visible, and never calls a heartbeat-only
+stream "healthy". Its four-MiB tail and inferred dates have explicit coverage
+limits. Verify a pending task against server state; never fabricate or replay
+its result merely to make a status indicator green. Any daemon transport or
+durable-reporting implementation belongs in a separately scoped, tested
+maintenance change, not an unannounced binary replacement during TUN repair.
 
 If explicit local proxy checks succeed while default/TUN checks fail, record
 DNS results and compare bounded IPv4/IPv6 and Windows/WSL probes. That narrows
@@ -106,6 +128,8 @@ disconnection as memory pressure.
 | 21:13:22 | Agent task-wakeup WebSocket reconnected after an old connection timeout | Recovery of the control connection, with a finite reconnect interruption |
 | 21:18 and 21:24 | One task's usage and completion reporting timed out despite ongoing heartbeats | Agent end-to-end reporting was not fully recovered; do not report complete stability |
 | Later read-only checks | Default WSL health probe timed out once; explicit proxy and subsequent Windows/WSL IPv4 probes succeeded; no core self-connections in snapshot | A residual intermittent/path-specific issue remains unclassified, separate from the eliminated observed self-reentry |
+| 21:32-21:34 | Fifteen consecutive health probes passed across Windows TUN, WSL TUN, and explicit proxy; new task messages were acknowledged | Current connectivity and new message reporting recovered without another restart; an earlier exhausted completion still needs server-state verification |
+| Follow-up status read | The earlier task's authenticated status endpoint returned `cancelled` | Its pending completion must not be replayed; this is not proof that its original completion reached the server |
 
 Important limits: the record supports the forwarding trigger and its successful
 correction, not an exact attribution of every earlier dropout. Capped core logs

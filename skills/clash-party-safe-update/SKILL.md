@@ -120,6 +120,12 @@ identity instead of hardcoding an old interface index.
   An old failed connection can time out after the repair: identify it,
   observe a successful new connection, and start the observation window from
   that recovery. Repeated new errors mean the repair is not stable.
+- Run `python3 scripts/check-agent-log.py --log LOCAL_DAEMON_LOG` for a bounded,
+  redacted five-minute summary including DEBUG-level message-report failures.
+  Healthy WebSocket heartbeats can suppress HTTP heartbeat checks. A local
+  `task completed` message is emitted before the completion request and is
+  not a server acknowledgment. Old exhausted completion retries require
+  server-state verification even after new task messages start succeeding.
 - Check timestamps **inside** log records, not just file modification time.
   Capped/rewritten logs observed during this incident retained stale records.
   Zero matching new errors in stale logs is not evidence of health; use fresh

@@ -19,6 +19,7 @@ This installation will:
 - CREATE file: `$HOME/.claude/skills/clash-party-safe-update/SKILL.md`
 - CREATE file: `$HOME/.claude/skills/clash-party-safe-update/references/stability-plan.md`
 - CREATE file: `$HOME/.claude/skills/clash-party-safe-update/references/windows-tun.md`
+- CREATE file: `$HOME/.claude/skills/clash-party-safe-update/scripts/check-agent-log.py`
 - CREATE file: `$HOME/.claude/skills/clash-party-safe-update/scripts/check-reload.py`
 - CREATE file: `$HOME/.claude/skills/clash-party-safe-update/scripts/inspect-network.ps1`
 - CREATE file: `$HOME/.claude/skills/clash-party-safe-update/scripts/safety-check.sh`
