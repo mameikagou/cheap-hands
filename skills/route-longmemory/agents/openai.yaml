@@ -1,0 +1,10 @@
+interface:
+  display_name: "LongMemory 路由"
+  short_description: "统一 LongMemory 的项目路由、检索、写入与验证"
+  default_prompt: "Use $route-longmemory to route, recall, and persist this memory in the correct canonical LongMemory project while preserving the raw source."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "longmemory"
+      description: "Query and persist memories in the self-hosted LongMemory service."
