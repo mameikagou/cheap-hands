@@ -1,0 +1,10 @@
+interface:
+  display_name: "OpenMemory 路由"
+  short_description: "统一 OpenMemory 的路由、分型、去重与原文写入"
+  default_prompt: "Use $route-openmemory to store this memory in the correct canonical project and sector without paraphrasing the source."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "openmemory"
+      description: "Query and persist memories in the shared OpenMemory service."

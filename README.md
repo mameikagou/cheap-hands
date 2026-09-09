@@ -8,6 +8,22 @@ A collection of Claude Code skills. Install any skill by pasting one line into C
 
 Copy any line below into your Claude Code conversation. Claude will fetch the instructions and install the skill automatically.
 
+### route-openmemory
+
+Routes, classifies, stores, queries, deduplicates, and migrates records in the original OpenMemory service across the three canonical projects and five memory sectors.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/route-openmemory/ai-install.md and follow the instructions inside.
+```
+
+### route-longmemory
+
+Uses the self-hosted LongMemory service for project-scoped context, recall, ingestion, durable decisions, task continuity, provenance verification, and conflict checks while OpenMemory remains available in parallel.
+
+```
+Fetch https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/route-longmemory/ai-install.md and follow the instructions inside.
+```
+
 ### clash-party-safe-update
 
 Diagnoses Windows/WSL TUN failures and guards Clash Party rule updates without routine restarts. Includes read-only inspection, physical-interface forwarding checks, reload safeguards, and a local rollback procedure.
@@ -113,6 +129,8 @@ Fetch the following URLs one by one and follow the instructions inside each:
 9. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/sanity/ai-install.md
 10. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/quant-ui-sync/ai-install.md
 11. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/clash-party-safe-update/ai-install.md
+12. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/route-openmemory/ai-install.md
+13. https://raw.githubusercontent.com/mameikagou/skill-forge/main/skills/route-longmemory/ai-install.md
 ```
 
 ## Uninstall
